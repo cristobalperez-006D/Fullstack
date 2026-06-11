@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Config-Server" />
+        <module name="eureka-server" />
+        <module name="nat-gateway" />
+      </profile>
+      <profile name="Annotation profile for producto-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="cliente-service" />
+        <module name="envios-service" />
+        <module name="notificaciones-service" />
+        <module name="producto-service" />
+        <module name="pagos-service" />
+        <module name="pedidos-service" />
+        <module name="inventario-service" />
+        <module name="carrito-service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Config-Server" options="-parameters" />
+      <module name="carrito-service" options="-parameters" />
+      <module name="cliente-service" options="-parameters" />
+      <module name="envios-service" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="inventario-service" options="-parameters" />
+      <module name="nat-gateway" options="-parameters" />
+      <module name="notificaciones-service" options="-parameters" />
+      <module name="pagos-service" options="-parameters" />
+      <module name="pedidos-service" options="-parameters" />
+      <module name="producto-service" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/carrito")
 public class CarritoController {
+
     @Autowired
     private CarritoService carritoService;
 
@@ -23,8 +24,7 @@ public class CarritoController {
 
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<CarritoDTO>> obtenerCarrito(@PathVariable Long clienteId) {
-        List<CarritoDTO> carrito = carritoService.obtenerCarritoPorCliente(clienteId);
-        return ResponseEntity.ok(carrito);
+        return ResponseEntity.ok(carritoService.obtenerCarritoPorCliente(clienteId));
     }
 
     @DeleteMapping("/eliminar/{itemId}")

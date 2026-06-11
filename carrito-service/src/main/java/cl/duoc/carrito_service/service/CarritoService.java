@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarritoService {
+
     @Autowired
     private CarritoRepository carritoRepository;
 
@@ -27,18 +28,15 @@ public class CarritoService {
     private ProductoFeignClient productoFeignClient;
 
     public CarritoDTO agregarItem(CarritoDTO dto) {
-        // Buscamos si el loco ya tiene este producto en el carro
         Optional<Carrito> itemExistente = carritoRepository
                 .findByClienteIdAndProductoId(dto.getClienteId(), dto.getProductoId());
 
         Carrito itemGuardado;
         if (itemExistente.isPresent()) {
-            // Si existe, le sumamos la cantidad no más
             Carrito item = itemExistente.get();
             item.setCantidad(item.getCantidad() + dto.getCantidad());
             itemGuardado = carritoRepository.save(item);
         } else {
-            // Si es producto nuevo, lo armamos a mano y pa' la base de datos
             Carrito nuevoItem = new Carrito();
             nuevoItem.setClienteId(dto.getClienteId());
             nuevoItem.setProductoId(dto.getProductoId());
@@ -65,7 +63,6 @@ public class CarritoService {
         carritoRepository.deleteByClienteId(clienteId);
     }
 
-    // Tu método mapeador clásico, todo en un mismo lugar
     private CarritoDTO mapToDTO(Carrito carrito) {
         CarritoDTO dto = new CarritoDTO();
         dto.setId(carrito.getId());
@@ -74,25 +71,23 @@ public class CarritoService {
         dto.setCantidad(carrito.getCantidad());
         dto.setPrecioUnitario(carrito.getPrecioUnitario());
 
-        // Multiplicamos para sacar el subtotal
+        // Subtotal joya con BigDecimal
         if (carrito.getPrecioUnitario() != null && carrito.getCantidad() != null) {
             dto.setSubtotal(carrito.getPrecioUnitario().multiply(BigDecimal.valueOf(carrito.getCantidad())));
         }
 
-        // Lógica para traer el Cliente por Feign con su respectivo Try-Catch
         try {
             ClienteDTO cliente = clienteFeignClient.obtenerClientePorId(carrito.getClienteId());
             dto.setCliente(cliente);
         } catch (Exception e) {
-            System.out.println("No se pudo traer el cliente: " + e.getMessage());
+            System.out.println("Fallo al traer cliente: " + e.getMessage());
         }
 
-        // Lógica para traer el Producto por Feign
         try {
             ProductoDTO producto = productoFeignClient.obtenerProductoPorId(carrito.getProductoId());
             dto.setProducto(producto);
         } catch (Exception e) {
-            System.out.println("No se pudo traer el producto: " + e.getMessage());
+            System.out.println("Fallo al traer producto: " + e.getMessage());
         }
 
         return dto;

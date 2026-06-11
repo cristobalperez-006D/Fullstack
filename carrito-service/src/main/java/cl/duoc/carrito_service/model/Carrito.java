@@ -1,24 +1,20 @@
 package cl.duoc.carrito_service.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "carrito")
+@Table(name = "carritos")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Carrito {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private Long ClienteId;
+    private Long clienteId;
 
     @Column(nullable = false)
     private Long productoId;
