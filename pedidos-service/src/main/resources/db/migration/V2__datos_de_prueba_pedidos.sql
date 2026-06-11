@@ -1,0 +1,2 @@
+INSERT INTO pedidos (cliente_id, monto_total, estado, fecha_pedido) VALUES (1, 12990.00, 'PAGADO', NOW());
+INSERT INTO pedidos (cliente_id, monto_total, estado, fecha_pedido) VALUES (2, 4500.50, 'PENDIENTE', NOW());
