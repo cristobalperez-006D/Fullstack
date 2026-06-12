@@ -15,10 +15,16 @@
         <option value="$PROJECT_DIR$/producto-service/pom.xml" />
         <option value="$PROJECT_DIR$/inventario-service/pom.xml" />
         <option value="$PROJECT_DIR$/notificaciones-service/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/nat-gateway/pom.xml" />
+      </set>
+    </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="25" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_25_PREVIEW" project-jdk-name="25" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

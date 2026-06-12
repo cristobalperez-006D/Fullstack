@@ -7,11 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="api-gateway" />
         <module name="Config-Server" />
         <module name="eureka-server" />
-        <module name="nat-gateway" />
       </profile>
-      <profile name="Annotation profile for producto-service" enabled="true">
+      <profile name="Annotation profile for Producto-Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -28,10 +28,14 @@
         <module name="carrito-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="nat-gateway" target="25" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Config-Server" options="-parameters" />
+      <module name="api-gateway" options="-parameters" />
       <module name="carrito-service" options="-parameters" />
       <module name="cliente-service" options="-parameters" />
       <module name="envios-service" options="-parameters" />

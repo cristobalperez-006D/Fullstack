@@ -5,7 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "cliente-service", path = "/api/v1/clientes")
+// ¡Acá estaba el drama! Ahora apunta a la ruta correcta que hace match con el gateway
+@FeignClient(name = "cliente-service", path = "/api/clientes")
 public interface ClienteFeignClient {
 
     @GetMapping("/{id}")
