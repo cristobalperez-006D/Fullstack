@@ -16,6 +16,12 @@ public class CarritoController {
     @Autowired
     private CarritoService carritoService;
 
+    // --- CORREGIDO: Ahora devuelve todos los carritos en lugar del saludo ---
+    @GetMapping
+    public ResponseEntity<List<CarritoDTO>> obtenerTodos() {
+        return ResponseEntity.ok(carritoService.obtenerTodos());
+    }
+
     @PostMapping("/agregar")
     public ResponseEntity<CarritoDTO> agregarItem(@RequestBody CarritoDTO carritoDTO) {
         CarritoDTO response = carritoService.agregarItem(carritoDTO);

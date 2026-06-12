@@ -55,6 +55,13 @@ public class CarritoService {
                 .collect(Collectors.toList());
     }
 
+    // Agrega esto en tu clase CarritoService.java
+    public List<CarritoDTO> obtenerTodos() {
+        return carritoRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
     public void eliminarItem(Long itemId) {
         carritoRepository.deleteById(itemId);
     }

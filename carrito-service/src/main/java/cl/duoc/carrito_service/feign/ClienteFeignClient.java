@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 // ¡Acá estaba el drama! Ahora apunta a la ruta correcta que hace match con el gateway
-@FeignClient(name = "cliente-service", path = "/api/clientes")
+@FeignClient(name = "cliente-service")
 public interface ClienteFeignClient {
-
-    @GetMapping("/{id}")
+    @GetMapping("/api/clientes/{id}")
     ClienteDTO obtenerClientePorId(@PathVariable("id") Long id);
 }
