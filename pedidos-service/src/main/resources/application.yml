@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: pedidos-service
+  config:
+    import: optional:configserver:http://localhost:8888
+  cloud:
+    config:
+      uri: http://localhost:8888
+      request-connect-timeout: 2000
+      request-read-timeout: 5000
+      fail-fast: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver

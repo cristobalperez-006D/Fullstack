@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: cliente-service
+          uri: lb://cliente-service
+          predicates:
+            - Path=/api/clientes/**
+        - id: carrito-service
+          uri: lb://carrito-service
+          predicates:
+            - Path=/api/carrito/**
+        - id: inventario-service
+          uri: lb://inventario-service
+          predicates:
+            - Path=/api/inventario/**
+        - id: pagos-service
+          uri: lb://pagos-service
+          predicates:
+            - Path=/api/pagos/**
+        - id: pedidos-service
+          uri: lb://pedidos-service
+          predicates:
+            - Path=/api/pedidos/**
+        - id: envios-service
+          uri: lb://envios-service
+          predicates:
+            - Path=/api/envios/**
+        - id: producto-service
+          uri: lb://producto-service
+          predicates:
+            - Path=/api/productos/**
+        - id: notificaciones-service
+          uri: lb://notificaciones-service
+          predicates:
+            - Path=/api/notificaciones/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: false
+    hostname: ${HOSTNAME:localhost}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
