@@ -2,13 +2,10 @@ spring:
   application:
     name: carrito-service
   config:
-    import: "optional:configserver:http://config-server:8888" # El 'optional:' es clave
+    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
   cloud:
     config:
-      uri: http://config-server:8888
-      fail-fast: false # Esto evita que se muera si no conecta al toque
-      retry:
-        enabled: true
-        max-attempts: 10
-        initial-interval: 2000
-        multiplier: 1.5
+      uri: http://localhost:8888
+      request-connect-timeout: 2000
+      request-read-timeout: 5000
+      fail-fast: false

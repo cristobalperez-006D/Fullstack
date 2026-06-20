@@ -37,19 +37,19 @@ spring:
               filters:
                 - RewritePath=/v3/api-docs/pagos-service, /v3/api-docs
 
-            - id: envios-service
-              uri: lb://envios-service
-              predicates:
-                - Path=/api/v1/facturas/**, /v3/api-docs/envios-service
-              filters:
-                - RewritePath=/v3/api-docs/envios-service, /v3/api-docs
-
             - id: pedidos-service
               uri: lb://pedidos-service
               predicates:
-                - Path=/api/v1/pedidoss/**, /v3/api-docs/pedidos-service
+                - Path=/api/v1/pedidos/**, /v3/api-docs/pedidos-service
               filters:
                 - RewritePath=/v3/api-docs/pedidos-service, /v3/api-docs
+
+            - id: envios-service
+              uri: lb://envios-service
+              predicates:
+                - Path=/api/v1/envioss/**, /v3/api-docs/envios-service
+              filters:
+                - RewritePath=/v3/api-docs/envios-service, /v3/api-docs
 
             - id: producto-service
               uri: lb://producto-service
@@ -81,11 +81,11 @@ springdoc:
       - name: Pagos
         url: /v3/api-docs/pagos-service
 
-      - name: envios
-        url: /v3/api-docs/envios-service
-
       - name: pedidos
         url: /v3/api-docs/pedidos-service
+
+      - name: envios
+        url: /v3/api-docs/envios-service
 
       - name: Productos
         url: /v3/api-docs/producto-service

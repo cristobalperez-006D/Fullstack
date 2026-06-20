@@ -10,147 +10,159 @@ services:
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
 
   eureka:
     restart: always
-    build:
-      context: ./Eureka-Server
-      dockerfile: Dockerfile
+    build: { context: ./Eureka-Server, dockerfile: Dockerfile }
     container_name: eureka
     ports:
       - "8761:8761"
     depends_on:
-      mysql-db:
-        condition: service_started
+      mysql-db: { condition: service_healthy }
 
   config-server:
     restart: always
-    build:
-      context: ./config-server
-      dockerfile: Dockerfile
+    build: { context: ./config-Server, dockerfile: Dockerfile }
     container_name: config-server
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-      CONFIG_SEARCH_LOCATIONS: file:/config-microservicios
     ports:
       - "8888:8888"
     volumes:
       - ./config-microservicios:/config-microservicios
+    environment:
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: "file:/config-microservicios/"
+      SPRING_PROFILES_ACTIVE: native
     depends_on:
-      mysql-db:
-        condition: service_started
-      eureka:
-        condition: service_started
+      mysql-db: { condition: service_healthy }
+      eureka: { condition: service_started }
 
   api-gateway:
     restart: always
-    build:
-      context: ./Api-Gateway
-      dockerfile: Dockerfile
+    build: { context: ./api-gateway, dockerfile: Dockerfile }
     container_name: api-gateway
     ports:
       - "9090:9090"
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
-  
-  #CONFIGURACION DE MICROSERVICIOS
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
+    depends_on:
+      config-server: { condition: service_started }
+
   carrito-service:
-    build:
-      context: ./carrito-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./carrito-service, dockerfile: Dockerfile }
     container_name: carrito-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_carrito
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   envios-service:
-    build:
-      context: ./envios-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./envios-service, dockerfile: Dockerfile }
     container_name: envios-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_facturacion
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   inventario-service:
-    build:
-      context: ./inventario-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./inventario-service, dockerfile: Dockerfile }
     container_name: inventario-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_inventario
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   notificaciones-service:
-    build:
-      context: ./notificaciones-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./notificaciones-service, dockerfile: Dockerfile }
     container_name: notificaciones-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_notificacion
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   pagos-service:
-    build:
-      context: ./pagos-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./pagos-service, dockerfile: Dockerfile }
     container_name: pagos-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_pago
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   producto-service:
-    build:
-      context: ./producto-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./producto-service, dockerfile: Dockerfile }
     container_name: producto-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_producto
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   pedidos-service:
-    build:
-      context: ./pedidos-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./pedidos-service, dockerfile: Dockerfile }
     container_name: pedidos-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_pedidos
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
   cliente-service:
-    build:
-      context: ./cliente-service
-      dockerfile: Dockerfile
+    restart: always
+    build: { context: ./cliente-service, dockerfile: Dockerfile }
     container_name: cliente-service
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bd_cliente
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-
+    depends_on:
+      config-server: { condition: service_started }
+      mysql-db: { condition: service_healthy }
 
 volumes:
   mysql_data:

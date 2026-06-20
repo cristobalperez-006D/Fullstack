@@ -10,5 +10,9 @@ spring:
     config:
       server:
         native:
-          # Esto debe apuntar a la carpeta que mapeamos en el compose
-          search-locations: file:/config-microservicios
+          search-locations: ${CONFIG_SEARCH_LOCATIONS:file:./config-microservicios}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
