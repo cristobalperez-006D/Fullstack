@@ -4,7 +4,7 @@
     <file url="file://$PROJECT_DIR$/api-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/carrito-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/cliente-service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/config-Server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/envios-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/inventario-service/src/main/java" charset="UTF-8" />
