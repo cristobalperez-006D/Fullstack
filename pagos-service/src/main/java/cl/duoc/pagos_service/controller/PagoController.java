@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pagos")
+@RequestMapping("/api/v1/pagos")
 @Tag(name = "Orquestación de Pasarela de Pagos", description = "Servicio transaccional de alta seguridad encargado de la validación, ejecución y auditoría de los pagos electrónicos realizados dentro de la plataforma.")
 public class PagoController {
 

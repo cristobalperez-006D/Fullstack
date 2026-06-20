@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/v1/clientes")
 @Tag(name = "Gestión de Identidad de Clientes", description = "Servicio core para la administración, resguardo y consulta del repositorio de usuarios. Gestiona el perfil completo del cliente y la integridad de sus datos personales.")
 public class ClienteController {
 

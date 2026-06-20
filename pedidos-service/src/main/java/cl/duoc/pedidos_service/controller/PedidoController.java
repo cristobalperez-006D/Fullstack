@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/api/v1/pedidos")
 @Tag(name = "Gestión de Pedidos", description = "API centralizada para la orquestación y gestión integral del ciclo de vida de las órdenes de compra. Provee un conjunto de operaciones transaccionales para administrar pedidos, consultar estados logísticos y auditar el historial de compras de los clientes.")
 public class PedidoController {
 

@@ -10,4 +10,5 @@ spring:
     config:
       server:
         native:
-          search-locations: file:./config-microservicios
+          # Esto debe apuntar a la carpeta que mapeamos en el compose
+          search-locations: file:/config-microservicios

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/carrito")
+@RequestMapping("/api/v1/carrito")
 @Tag(name = "Orquestación del Carrito", description = "Motor transaccional de alta concurrencia para la gestión temporal de intenciones de compra. Administra el ciclo de vida de los productos pre-checkout con validación de integridad referencial.")
 public class CarritoController {
 

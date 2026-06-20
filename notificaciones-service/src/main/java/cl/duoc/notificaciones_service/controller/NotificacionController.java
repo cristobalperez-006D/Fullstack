@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/notificaciones")
+@RequestMapping("/api/v1/notificaciones")
 @Tag(name = "Gestión de Notificaciones y Alertas", description = "Servicio de mensajería y eventos encargado de la comunicación asíncrona hacia los usuarios finales. Gestiona el registro y visualización de alertas críticas del sistema.")
 public class NotificacionController {
 

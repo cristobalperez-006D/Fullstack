@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/v1/productos")
 @Tag(name = "Catálogo de Productos", description = "API dedicada a la gestión integral del inventario de productos. Permite realizar operaciones CRUD con alta disponibilidad y coherencia de datos para el ecosistema microservicios.")
 public class ProductoController {
 

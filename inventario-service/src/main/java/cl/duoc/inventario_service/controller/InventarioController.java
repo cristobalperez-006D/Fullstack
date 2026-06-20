@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/inventario")
+@RequestMapping("/api/v1/inventario")
 @Tag(name = "Gestión de Inventario y Stock", description = "Motor de control de activos y existencias. Administra los niveles de stock en tiempo real y valida la disponibilidad de productos para garantizar la integridad en el proceso de checkout.")
 public class InventarioController {
 

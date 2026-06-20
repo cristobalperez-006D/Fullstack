@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/envios")
+@RequestMapping("/api/v1/envios")
 @Tag(name = "Gestión de Logística y Envíos", description = "Servicio core para la trazabilidad y monitoreo del flujo logístico de los pedidos. Gestiona las transiciones de estado de despacho y asegura la integridad del seguimiento de paquetes en el ecosistema.")
 public class EnvioController {
 

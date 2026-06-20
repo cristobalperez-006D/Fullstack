@@ -10,9 +10,8 @@
         <module name="api-gateway" />
         <module name="config-server" />
         <module name="Config-Server" />
-        <module name="eureka-server" />
       </profile>
-      <profile name="Annotation profile for Producto-Service" enabled="true">
+      <profile name="Annotation profile for Producto-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -29,6 +28,7 @@
         <module name="Inventario-Service" />
         <module name="Pedidos-Service" />
         <module name="Cliente-Service" />
+        <module name="eureka-server" />
         <module name="inventario-service" />
         <module name="Pagos-Service" />
         <module name="Carrito-Service" />
