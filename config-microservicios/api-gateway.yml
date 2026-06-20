@@ -1,105 +1,103 @@
 server:
   address: 0.0.0.0
-  port: 9090
 
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      routes:
-        # Carrito
-        - id: carrito-service
-          uri: lb://carrito-service
-          predicates:
-            - Path=/api/v1/carrito/**, /v3/api-docs/carrito-service/**
-          filters:
-            - RewritePath=/v3/api-docs/carrito-service(?<segment>/?.*), /v3/api-docs$\{segment}
+      server:
+        webflux:
+          routes:
+            - id: cliente-service
+              uri: lb://cliente-service
+              predicates:
+                - Path=/api/v1/cliente/**, /v3/api-docs/cliente-service
+              filters:
+                - RewritePath=/v3/api-docs/cliente-service, /v3/api-docs
 
-        # Cliente
-        - id: cliente-service
-          uri: lb://cliente-service
-          predicates:
-            - Path=/api/v1/clientes/**, /v3/api-docs/cliente-service/**
-          filters:
-            - RewritePath=/v3/api-docs/cliente-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: carrito-service
+              uri: lb://carrito-service
+              predicates:
+                - Path=/api/v1/carritos/**, /v3/api-docs/carrito-service
+              filters:
+                - RewritePath=/v3/api-docs/carrito-service, /v3/api-docs
 
-        # Envios
-        - id: envios-service
-          uri: lb://envios-service
-          predicates:
-            - Path=/api/v1/envios/**, /v3/api-docs/envios-service/**
-          filters:
-            - RewritePath=/v3/api-docs/envios-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: inventario-service
+              uri: lb://inventario-service
+              predicates:
+                - Path=/api/v1/inventario/**, /v3/api-docs/inventario-service
+              filters:
+                - RewritePath=/v3/api-docs/inventario-service, /v3/api-docs
 
-        # Inventario
-        - id: inventario-service
-          uri: lb://inventario-service
-          predicates:
-            - Path=/api/v1/inventario/**, /v3/api-docs/inventario-service/**
-          filters:
-            - RewritePath=/v3/api-docs/inventario-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: pagos-service
+              uri: lb://pagos-service
+              predicates:
+                - Path=/api/v1/pagos/**, /v3/api-docs/pagos-service
+              filters:
+                - RewritePath=/v3/api-docs/pagos-service, /v3/api-docs
 
-        # Notificaciones
-        - id: notificaciones-service
-          uri: lb://notificaciones-service
-          predicates:
-            - Path=/api/v1/notificaciones/**, /v3/api-docs/notificaciones-service/**
-          filters:
-            - RewritePath=/v3/api-docs/notificaciones-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: envios-service
+              uri: lb://envios-service
+              predicates:
+                - Path=/api/v1/facturas/**, /v3/api-docs/envios-service
+              filters:
+                - RewritePath=/v3/api-docs/envios-service, /v3/api-docs
 
-        # Pagos
-        - id: pagos-service
-          uri: lb://pagos-service
-          predicates:
-            - Path=/api/v1/pagos/**, /v3/api-docs/pagos-service/**
-          filters:
-            - RewritePath=/v3/api-docs/pagos-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: pedidos-service
+              uri: lb://pedidos-service
+              predicates:
+                - Path=/api/v1/pedidoss/**, /v3/api-docs/pedidos-service
+              filters:
+                - RewritePath=/v3/api-docs/pedidos-service, /v3/api-docs
 
-        # Pedidos
-        - id: pedidos-service
-          uri: lb://pedidos-service
-          predicates:
-            - Path=/api/v1/pedidos/**, /v3/api-docs/pedidos-service/**
-          filters:
-            - RewritePath=/v3/api-docs/pedidos-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: producto-service
+              uri: lb://producto-service
+              predicates:
+                - Path=/api/v1/productos/**, /v3/api-docs/producto-service
+              filters:
+                - RewritePath=/v3/api-docs/producto-service, /v3/api-docs
 
-        # Productos
-        - id: producto-service
-          uri: lb://producto-service
-          predicates:
-            - Path=/api/v1/productos/**, /v3/api-docs/producto-service/**
-          filters:
-            - RewritePath=/v3/api-docs/producto-service(?<segment>/?.*), /v3/api-docs$\{segment}
+            - id: notificaciones-service
+              uri: lb://notificaciones-service
+              predicates:
+                - Path=/api/v1/notificaciones/**, /v3/api-docs/notificaciones-service
+              filters:
+                - RewritePath=/v3/api-docs/notificaciones-service, /v3/api-docs
 
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
     urls:
+      - name: cliente
+        url: /v3/api-docs/cliente-service
+
       - name: Carrito
         url: /v3/api-docs/carrito-service
-      - name: Cliente
-        url: /v3/api-docs/cliente-service
-      - name: Envios
-        url: /v3/api-docs/envios-service
+
       - name: Inventario
         url: /v3/api-docs/inventario-service
-      - name: Notificaciones
-        url: /v3/api-docs/notificaciones-service
+
       - name: Pagos
         url: /v3/api-docs/pagos-service
-      - name: Pedidos
+
+      - name: envios
+        url: /v3/api-docs/envios-service
+
+      - name: pedidos
         url: /v3/api-docs/pedidos-service
+
       - name: Productos
         url: /v3/api-docs/producto-service
+
+      - name: Notificaciones
+        url: /v3/api-docs/notificaciones-service
 
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
   instance:
     prefer-ip-address: true
