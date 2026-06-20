@@ -40,9 +40,9 @@ spring:
             - id: envios-service
               uri: lb://envios-service
               predicates:
-                - Path=/api/v1/envios/**, /v3/api-docs/enviosciones-service
+                - Path=/api/v1/envios/**, /v3/api-docs/envios-service
               filters:
-                - RewritePath=/v3/api-docs/enviosciones-service, /v3/api-docs
+                - RewritePath=/v3/api-docs/envios-service, /v3/api-docs
 
             - id: pedidos-service
               uri: lb://pedidos-service

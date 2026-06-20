@@ -2,10 +2,11 @@ spring:
   application:
     name: inventario-service
   config:
-    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://localhost:8888}
   cloud:
     config:
-      uri: http://localhost:8888
-      request-connect-timeout: 2000
-      request-read-timeout: 5000
       fail-fast: false
+      retry:
+        initial-interval: 2000
+        max-attempts: 10
+        multiplier: 1.5
