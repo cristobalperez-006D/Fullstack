@@ -23,18 +23,26 @@
         <module name="Envios-Service" />
         <module name="envios-service" />
         <module name="notificaciones-service" />
-        <module name="producto-service" />
         <module name="Notificaciones-Service" />
+        <module name="producto-service" />
+        <module name="eureka-Server" />
+        <module name="Carrito-service" />
         <module name="Inventario-Service" />
-        <module name="Pedidos-Service" />
         <module name="Cliente-Service" />
         <module name="eureka-server" />
         <module name="inventario-service" />
         <module name="Pagos-Service" />
         <module name="Carrito-Service" />
+        <module name="carrito-service" />
+        <module name="Inventario-service" />
+        <module name="Pedidos-Service" />
+        <module name="Cliente-service" />
+        <module name="Pagos-service" />
+        <module name="Pedidos-service" />
         <module name="pagos-service" />
         <module name="pedidos-service" />
-        <module name="carrito-service" />
+        <module name="Producto-service" />
+        <module name="Envios-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -44,19 +52,27 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Carrito-Service" options="-parameters" />
+      <module name="Carrito-service" options="-parameters" />
       <module name="Cliente-Service" options="-parameters" />
+      <module name="Cliente-service" options="-parameters" />
       <module name="Config-Server" options="-parameters" />
       <module name="Envios-Service" options="-parameters" />
+      <module name="Envios-service" options="-parameters" />
       <module name="Inventario-Service" options="-parameters" />
+      <module name="Inventario-service" options="-parameters" />
       <module name="Notificaciones-Service" options="-parameters" />
       <module name="Pagos-Service" options="-parameters" />
+      <module name="Pagos-service" options="-parameters" />
       <module name="Pedidos-Service" options="-parameters" />
+      <module name="Pedidos-service" options="-parameters" />
       <module name="Producto-Service" options="-parameters" />
+      <module name="Producto-service" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="carrito-service" options="-parameters" />
       <module name="cliente-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="envios-service" options="-parameters" />
+      <module name="eureka-Server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="inventario-service" options="-parameters" />
       <module name="nat-gateway" options="-parameters" />
