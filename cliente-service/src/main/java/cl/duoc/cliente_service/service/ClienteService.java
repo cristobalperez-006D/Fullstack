@@ -3,6 +3,7 @@ package cl.duoc.cliente_service.service;
 import cl.duoc.cliente_service.dto.ClienteDTO;
 import cl.duoc.cliente_service.model.Cliente;
 import cl.duoc.cliente_service.repository.ClienteRepository;
+import cl.duoc.cliente_service.exception.RecursoNoEncontradoException; // Importa tu excepción
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class ClienteService {
     public ClienteDTO findById(Long id) {
         return clienteRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElse(null);
+                // Si no existe, tiramos la excepción. ¡Adiós al null!
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe un cliente con el ID: " + id));
     }
 
     public ClienteDTO save(ClienteDTO dto) {
@@ -37,6 +39,10 @@ public class ClienteService {
     }
 
     public void delete(Long id) {
+        // Validación extra: verificamos si existe antes de borrar
+        if (!clienteRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("Imposible eliminar: El cliente con ID " + id + " no existe.");
+        }
         clienteRepository.deleteById(id);
     }
 
@@ -46,10 +52,9 @@ public class ClienteService {
             c.setEmail(dto.getEmail());
             Cliente actualizado = clienteRepository.save(c);
             return mapToDTO(actualizado);
-        }).orElse(null);
+        }).orElseThrow(() -> new RecursoNoEncontradoException("No se puede actualizar, el cliente ID " + id + " no se encuentra en el registro."));
     }
 
-    // Tu método mapeador clásico pa' no usar librerías raras
     private ClienteDTO mapToDTO(Cliente cliente) {
         ClienteDTO dto = new ClienteDTO();
         dto.setId(cliente.getId());

@@ -5,6 +5,7 @@ import cl.duoc.pedidos_service.dto.ClienteDTO;
 import cl.duoc.pedidos_service.feign.ClienteFeignClient;
 import cl.duoc.pedidos_service.model.Pedido;
 import cl.duoc.pedidos_service.repository.PedidoRepository;
+import cl.duoc.pedidos_service.exception.RecursoNoEncontradoException; // ¡Importa tu excepción!
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +31,15 @@ public class PedidoService {
     public PedidoDTO findById(Long id) {
         return pedidoRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElse(null);
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró el pedido con ID: " + id));
     }
 
     public List<PedidoDTO> findByClienteId(Long clienteId) {
-        return pedidoRepository.findByClienteId(clienteId).stream()
+        List<Pedido> pedidos = pedidoRepository.findByClienteId(clienteId);
+        if (pedidos.isEmpty()) {
+            throw new RecursoNoEncontradoException("No existen pedidos registrados para el cliente ID: " + clienteId);
+        }
+        return pedidos.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
@@ -55,14 +60,16 @@ public class PedidoService {
             p.setEstado(nuevoEstado);
             Pedido actualizado = pedidoRepository.save(p);
             return mapToDTO(actualizado);
-        }).orElse(null);
+        }).orElseThrow(() -> new RecursoNoEncontradoException("Imposible actualizar: El pedido ID " + id + " no existe."));
     }
 
     public void delete(Long id) {
+        if (!pedidoRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("No se puede eliminar: Pedido ID " + id + " no encontrado.");
+        }
         pedidoRepository.deleteById(id);
     }
 
-    // Tu mapeador a mano de toda la vida
     private PedidoDTO mapToDTO(Pedido pedido) {
         PedidoDTO dto = new PedidoDTO();
         dto.setId(pedido.getId());
@@ -76,7 +83,8 @@ public class PedidoService {
             ClienteDTO cliente = clienteFeignClient.obtenerClientePorId(pedido.getClienteId());
             dto.setCliente(cliente);
         } catch (Exception e) {
-            System.out.println("No se pudo mapear el cliente por Feign: " + e.getMessage());
+            // Lanzamos la excepción para que el GlobalExceptionHandler la capture y devuelva el JSON pro
+            throw new RecursoNoEncontradoException("No se pudo vincular el cliente ID [" + pedido.getClienteId() + "] al pedido.");
         }
 
         return dto;

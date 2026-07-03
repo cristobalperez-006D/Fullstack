@@ -3,6 +3,7 @@ package cl.duoc.producto_service.service;
 import cl.duoc.producto_service.dto.ProductoDTO;
 import cl.duoc.producto_service.model.Producto;
 import cl.duoc.producto_service.repository.ProductoRepository;
+import cl.duoc.producto_service.exception.RecursoNoEncontradoException; // ¡Importa tu excepción!
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class ProductoService {
     public ProductoDTO findById(Long id) {
         return productoRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElse(null);
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró el producto con ID: " + id));
     }
 
     public ProductoDTO save(ProductoDTO dto) {
@@ -42,10 +43,13 @@ public class ProductoService {
             p.setPrecio(dto.getPrecio());
             Producto actualizado = productoRepository.save(p);
             return mapToDTO(actualizado);
-        }).orElse(null);
+        }).orElseThrow(() -> new RecursoNoEncontradoException("No se pudo actualizar: El producto ID " + id + " no existe."));
     }
 
     public void delete(Long id) {
+        if (!productoRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("Imposible borrar: Producto ID " + id + " no encontrado.");
+        }
         productoRepository.deleteById(id);
     }
 

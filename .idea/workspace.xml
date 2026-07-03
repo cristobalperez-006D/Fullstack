@@ -5,25 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24c06cf6-14e8-4dca-a9e4-4d7c43c250f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/carrito-service/src/test/java/cl/duoc/carrito_service/service/CarritoServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cliente-service/src/test/java/cl/duoc/cliente_service/service/ClienteServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/envios-service/src/test/java/cl/duoc/envios_service/service/EnviosServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventario-service/src/test/java/cl/duoc/inventario_service/service/InventarioServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/test/java/cl/duoc/notificaciones_service/service/NotificacionesServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pagos-service/src/test/java/cl/duoc/pagos_service/service/PagosServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/service/PedidosServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/producto-service/src/test/java/cl/duoc/producto_service/service/ProductoServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/resources/db/migration/V2__datos_de_prueba_clientes.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/resources/db/migration/V2__datos_de_prueba_clientes.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/PedidosServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/PedidosServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/config/SwaggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/dto/ApiResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/controller/CarritoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/controller/CarritoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/service/CarritoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/service/CarritoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/controller/ClienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/controller/ClienteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/service/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/service/ClienteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/controller/EnvioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/controller/EnvioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/service/EnvioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/service/EnvioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/controller/InventarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/controller/InventarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/service/InventarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/service/InventarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/controller/NotificacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/controller/NotificacionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/service/NotificacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/service/NotificacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/controller/PagoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/controller/PagoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/service/PagoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/service/PagoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/controller/PedidoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/controller/PedidoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/service/PedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/service/PedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/controller/ProductoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/controller/ProductoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/service/ProductoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/service/ProductoService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +54,6 @@
   </component>
   <component name="EmbeddingIndexingInfo">
     <option name="cachedIndexableFilesCount" value="213" />
-    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -64,60 +85,68 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.CarritoServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ClienteServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EnviosServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.InventarioServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NotificacionesServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PagosServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PedidosServiceApplicationTests (1).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PedidosServiceApplicationTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PedidosServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ProductoServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CarritoServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ClienteServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ConfigServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EnviosServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EurekaServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.InventarioServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.NotificacionesServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.PagosServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.PedidosServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ProductoServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/kevin/OneDrive/Desktop/Fullstack/carrito-service/src/test/java/cl/duoc/carrito_service&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.CarritoServiceTest.executor": "Run",
+    "JUnit.ClienteServiceTest.executor": "Run",
+    "JUnit.EnviosServiceTest.executor": "Run",
+    "JUnit.InventarioServiceTest.executor": "Run",
+    "JUnit.NotificacionesServiceTest.executor": "Run",
+    "JUnit.PagosServiceTest.executor": "Run",
+    "JUnit.PedidosServiceApplicationTests (1).executor": "Run",
+    "JUnit.PedidosServiceApplicationTests.executor": "Run",
+    "JUnit.PedidosServiceTest.executor": "Run",
+    "JUnit.ProductoServiceTest.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.ApiGatewayApplication.executor": "Run",
+    "Spring Boot.CarritoServiceApplication.executor": "Run",
+    "Spring Boot.ClienteServiceApplication.executor": "Run",
+    "Spring Boot.ConfigServerApplication.executor": "Run",
+    "Spring Boot.EnviosServiceApplication.executor": "Run",
+    "Spring Boot.EurekaServerApplication.executor": "Run",
+    "Spring Boot.InventarioServiceApplication.executor": "Run",
+    "Spring Boot.NotificacionesServiceApplication.executor": "Run",
+    "Spring Boot.PagosServiceApplication.executor": "Run",
+    "Spring Boot.PedidosServiceApplication.executor": "Run",
+    "Spring Boot.ProductoServiceApplication.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/kevin/OneDrive/Desktop/Fullstack/producto-service/src/main/java/cl/duoc/producto_service",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\carrito-service\src\test\java\cl\duoc\carrito_service" />
-      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\cliente-service\src\test\java\cl\duoc\cliente_service" />
-      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\envios-service\src\test\java\cl\duoc\envios_service" />
-      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\inventario-service\src\test\java\cl\duoc\inventario_service" />
-      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\notificaciones-service\src\test\java\cl\duoc\notificaciones_service" />
+      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\producto-service\src\main\java\cl\duoc\producto_service" />
+      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\pedidos-service\src\main\java\cl\duoc\pedidos_service" />
+      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\pagos-service\src\main\java\cl\duoc\pagos_service" />
+      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\notificaciones-service\src\main\java\cl\duoc\notificaciones_service" />
+      <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\inventario-service\src\main\java\cl\duoc\inventario_service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cl.duoc.producto_service.dto" />
+      <recent name="cl.duoc.pedidos_service.dto" />
+      <recent name="cl.duoc.pagos_service.dto" />
+      <recent name="cl.duoc.notificaciones_service.dto" />
+      <recent name="cl.duoc.inventario_service.dto" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -331,6 +360,7 @@
       <updated>1782336187332</updated>
       <workItem from="1782336188515" duration="2753000" />
       <workItem from="1782339029745" duration="248000" />
+      <workItem from="1783031522521" duration="5366000" />
     </task>
     <servers />
   </component>

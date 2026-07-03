@@ -3,6 +3,7 @@ package cl.duoc.inventario_service.service;
 import cl.duoc.inventario_service.dto.InventarioDTO;
 import cl.duoc.inventario_service.model.Inventario;
 import cl.duoc.inventario_service.repository.InventarioRepository;
+import cl.duoc.inventario_service.exception.RecursoNoEncontradoException; // Importa tu excepción
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,10 @@ public class InventarioService {
 
     public InventarioDTO findByProductoId(Long productoId) {
         Inventario inv = inventarioRepository.findByProductoId(productoId);
-        return inv != null ? mapToDTO(inv) : null;
+        if (inv == null) {
+            throw new RecursoNoEncontradoException("No existe registro de inventario para el producto ID: " + productoId);
+        }
+        return mapToDTO(inv);
     }
 
     public InventarioDTO save(InventarioDTO dto) {
@@ -35,24 +39,31 @@ public class InventarioService {
         return mapToDTO(guardado);
     }
 
-    // Este método es la joyita: resta el stock si es que hay suficiente
     public InventarioDTO restarStock(Long productoId, Integer cantidadComprada) {
         Inventario inv = inventarioRepository.findByProductoId(productoId);
 
-        if (inv != null && inv.getCantidad() >= cantidadComprada) {
-            inv.setCantidad(inv.getCantidad() - cantidadComprada);
-            Inventario actualizado = inventarioRepository.save(inv);
-            return mapToDTO(actualizado);
+        // Validamos que el producto exista primero
+        if (inv == null) {
+            throw new RecursoNoEncontradoException("Producto ID " + productoId + " no encontrado en el inventario.");
         }
-        // Si no hay stock o el producto no existe en inventario, devolvemos null
-        return null;
+
+        // Validamos el stock disponible
+        if (inv.getCantidad() < cantidadComprada) {
+            throw new RuntimeException("¡Puta la cuestión! Stock insuficiente para el producto ID " + productoId + ". Disponible: " + inv.getCantidad());
+        }
+
+        inv.setCantidad(inv.getCantidad() - cantidadComprada);
+        Inventario actualizado = inventarioRepository.save(inv);
+        return mapToDTO(actualizado);
     }
 
     public void delete(Long id) {
+        if (!inventarioRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("No se puede eliminar: Inventario ID " + id + " no encontrado.");
+        }
         inventarioRepository.deleteById(id);
     }
 
-    // El clásico mapeador pa' tener todo en casa
     private InventarioDTO mapToDTO(Inventario inv) {
         InventarioDTO dto = new InventarioDTO();
         dto.setId(inv.getId());

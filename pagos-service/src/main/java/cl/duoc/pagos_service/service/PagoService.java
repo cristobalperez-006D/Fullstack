@@ -5,6 +5,7 @@ import cl.duoc.pagos_service.dto.NotificacionDTO;
 import cl.duoc.pagos_service.feign.NotificacionFeignClient;
 import cl.duoc.pagos_service.model.Pago;
 import cl.duoc.pagos_service.repository.PagoRepository;
+import cl.duoc.pagos_service.exception.RecursoNoEncontradoException; // ¡Importa tu excepción!
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class PagoService {
     public PagoDTO findById(Long id) {
         return pagoRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElse(null);
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró registro del pago con ID: " + id));
     }
 
     public PagoDTO registrarPago(PagoDTO dto) {
@@ -39,13 +40,12 @@ public class PagoService {
         pago.setClienteId(dto.getClienteId());
         pago.setMonto(dto.getMonto());
         pago.setMetodoPago(dto.getMetodoPago());
-        // Si no mandan estado, asumimos que pasa aprobado al toque
         pago.setEstado(dto.getEstado() != null ? dto.getEstado() : "APROBADO");
         pago.setFechaPago(LocalDateTime.now());
 
         Pago guardado = pagoRepository.save(pago);
 
-        // Saltamos al otro microservicio usando OpenFeign para dejar registro del aviso
+        // Intentamos notificar, pero si falla Feign, lanzamos error para que el usuario sepa que algo pasó
         try {
             NotificacionDTO notiDto = new NotificacionDTO();
             notiDto.setClienteId(guardado.getClienteId());
@@ -54,13 +54,13 @@ public class PagoService {
 
             notificacionFeignClient.crear(notiDto);
         } catch (Exception e) {
-            System.out.println("No se pudo gatillar la notificación del pago: " + e.getMessage());
+            // Aquí lanzamos una excepción técnica si el sistema de notificaciones no responde
+            throw new RuntimeException("Pago registrado, pero falló el envío de la notificación: " + e.getMessage());
         }
 
         return mapToDTO(guardado);
     }
 
-    // Mapeo manual directo en el service, sin rodeos
     private PagoDTO mapToDTO(Pago pago) {
         PagoDTO dto = new PagoDTO();
         dto.setId(pago.getId());

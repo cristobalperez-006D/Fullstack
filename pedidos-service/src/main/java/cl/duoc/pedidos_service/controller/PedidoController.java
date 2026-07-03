@@ -1,6 +1,7 @@
 package cl.duoc.pedidos_service.controller;
 
 import cl.duoc.pedidos_service.dto.PedidoDTO;
+import cl.duoc.pedidos_service.dto.ApiResponseDTO; // Importa tu DTO de respuesta
 import cl.duoc.pedidos_service.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,105 +17,79 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/pedidos")
-@Tag(name = "Gestión de Pedidos", description = "API centralizada para la orquestación y gestión integral del ciclo de vida de las órdenes de compra. Provee un conjunto de operaciones transaccionales para administrar pedidos, consultar estados logísticos y auditar el historial de compras de los clientes.")
+@Tag(name = "Gestión de Pedidos", description = "API centralizada para la orquestación y gestión integral del ciclo de vida de las órdenes.")
 public class PedidoController {
 
     @Autowired
     private PedidoService pedidoService;
 
-    @Operation(
-            summary = "Recuperar el catálogo histórico de pedidos",
-            description = "Despliega una lista exhaustiva con todos los pedidos (activos e históricos) registrados en el ecosistema. Este endpoint está optimizado para alimentar dashboards gerenciales y sistemas de auditoría interna."
-    )
+    @Operation(summary = "Recuperar el catálogo histórico de pedidos")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Extracción de datos exitosa. Se retorna la colección completa de pedidos.")
+            @ApiResponse(responseCode = "200", description = "Extracción de datos exitosa.")
     })
     @GetMapping
-    public ResponseEntity<List<PedidoDTO>> obtenerTodos() {
-        return ResponseEntity.ok(pedidoService.findAll());
+    public ResponseEntity<ApiResponseDTO<List<PedidoDTO>>> obtenerTodos() {
+        List<PedidoDTO> data = pedidoService.findAll();
+        String mensaje = "Catálogo histórico extraído con éxito.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Inspeccionar un pedido específico por su ID",
-            description = "Realiza una búsqueda de alta precisión en la base de datos para extraer los detalles estructurados de una orden de compra en particular, validando su existencia en tiempo real."
-    )
+    @Operation(summary = "Inspeccionar un pedido específico")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Pedido localizado y retornado con su metadata intacta."),
-            @ApiResponse(responseCode = "404", description = "El ID proporcionado no coincide con ningún registro válido en el sistema.")
+            @ApiResponse(responseCode = "200", description = "Pedido localizado."),
+            @ApiResponse(responseCode = "404", description = "Pedido no encontrado.")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoDTO> obtenerPorId(
-            @Parameter(description = "Identificador único y autogenerado del pedido", example = "1050")
-            @PathVariable Long id
-    ) {
-        PedidoDTO pedido = pedidoService.findById(id);
-        return pedido != null ? ResponseEntity.ok(pedido) : ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponseDTO<PedidoDTO>> obtenerPorId(@PathVariable Long id) {
+        PedidoDTO data = pedidoService.findById(id);
+        String mensaje = "Detalles del pedido recuperados correctamente.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Listar el historial de compras de un cliente",
-            description = "Filtra y compila todas las transacciones y pedidos asociados al perfil de un cliente específico. Fundamental para el módulo de atención al usuario y programas de fidelización."
-    )
+    @Operation(summary = "Listar el historial de compras de un cliente")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Historial del cliente recuperado exitosamente.")
+            @ApiResponse(responseCode = "200", description = "Historial del cliente recuperado.")
     })
     @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<List<PedidoDTO>> obtenerPorCliente(
-            @Parameter(description = "Identificador único del cliente en el Customer Service", example = "42")
-            @PathVariable Long clienteId
-    ) {
-        return ResponseEntity.ok(pedidoService.findByClienteId(clienteId));
+    public ResponseEntity<ApiResponseDTO<List<PedidoDTO>>> obtenerPorCliente(@PathVariable Long clienteId) {
+        List<PedidoDTO> data = pedidoService.findByClienteId(clienteId);
+        String mensaje = "Historial de transacciones localizado.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Emitir y registrar una nueva orden de compra",
-            description = "Procesa un payload con la estructura del carrito, validando la integridad de los datos para generar un nuevo pedido formal en el sistema. Gatilla la fase inicial del workflow de logística."
-    )
+    @Operation(summary = "Emitir y registrar una nueva orden")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "El pedido fue creado y persistido con éxito en la base de datos."),
-            @ApiResponse(responseCode = "400", description = "Estructura del payload inválida o datos faltantes.")
+            @ApiResponse(responseCode = "201", description = "Pedido creado con éxito.")
     })
     @PostMapping
-    public ResponseEntity<PedidoDTO> crear(
-            @Parameter(description = "Objeto de transferencia de datos con la información del nuevo pedido")
-            @RequestBody PedidoDTO dto
-    ) {
-        PedidoDTO creado = pedidoService.crearPedido(dto);
-        return new ResponseEntity<>(creado, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponseDTO<PedidoDTO>> crear(@RequestBody PedidoDTO dto) {
+        PedidoDTO data = pedidoService.crearPedido(dto);
+        String mensaje = "¡Pedido formalizado e inyectado en el sistema logístico!";
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Transicionar el estado logístico de un pedido",
-            description = "Modifica el status actual de una orden (ej: de 'PENDIENTE' a 'EN_TRANSITO' o 'ENTREGADO'). Esta operación es crítica para mantener la trazabilidad en tiempo real del flujo de la cadena de suministro."
-    )
+    @Operation(summary = "Transicionar el estado logístico")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "El estado del pedido fue actualizado y sincronizado correctamente."),
-            @ApiResponse(responseCode = "404", description = "No se pudo actualizar porque el pedido no existe en los registros.")
+            @ApiResponse(responseCode = "200", description = "Estado sincronizado.")
     })
     @PutMapping("/{id}/estado")
-    public ResponseEntity<PedidoDTO> cambiarEstado(
-            @Parameter(description = "ID del pedido a transicionar", example = "1050")
+    public ResponseEntity<ApiResponseDTO<PedidoDTO>> cambiarEstado(
             @PathVariable Long id,
-            @Parameter(description = "Nuevo status logístico a aplicar", example = "DESPACHADO")
-            @RequestParam String estado
-    ) {
-        PedidoDTO actualizado = pedidoService.actualizarEstado(id, estado);
-        return actualizado != null ? ResponseEntity.ok(actualizado) : ResponseEntity.notFound().build();
+            @RequestParam String estado) {
+        PedidoDTO data = pedidoService.actualizarEstado(id, estado);
+        String mensaje = "Trazabilidad del pedido actualizada con éxito.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Purgar un pedido del sistema",
-            description = "Ejecuta la eliminación física/lógica de un registro de pedido. Se debe usar con precaución, idealmente solo por perfiles de administrador para corregir anomalías."
-    )
+    @Operation(summary = "Purgar un pedido del sistema")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "El registro fue aniquilado de la base de datos exitosamente.")
+            @ApiResponse(responseCode = "204", description = "El registro fue eliminado.")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(
-            @Parameter(description = "ID del pedido que será eliminado de la faz de la tierra", example = "1050")
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<ApiResponseDTO<Void>> eliminar(@PathVariable Long id) {
         pedidoService.delete(id);
-        return ResponseEntity.noContent().build();
+        String mensaje = "Registro erradicado de la base de datos.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
     }
 }

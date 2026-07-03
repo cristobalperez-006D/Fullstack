@@ -1,7 +1,9 @@
 package cl.duoc.notificaciones_service.service;
+
 import cl.duoc.notificaciones_service.dto.NotificacionDTO;
 import cl.duoc.notificaciones_service.model.Notificacion;
 import cl.duoc.notificaciones_service.repository.NotificacionRepository;
+import cl.duoc.notificaciones_service.exception.RecursoNoEncontradoException; // ¡No olvides importar esto!
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,12 @@ public class NotificacionService {
     }
 
     public List<NotificacionDTO> findByClienteId(Long clienteId) {
-        return notificacionRepository.findByClienteId(clienteId).stream()
+        List<Notificacion> notificaciones = notificacionRepository.findByClienteId(clienteId);
+        // Si no tiene notificaciones, lanzamos la excepción para el 404
+        if (notificaciones.isEmpty()) {
+            throw new RecursoNoEncontradoException("No se encontraron notificaciones para el cliente ID: " + clienteId);
+        }
+        return notificaciones.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
@@ -32,8 +39,6 @@ public class NotificacionService {
         notificacion.setClienteId(dto.getClienteId());
         notificacion.setTipo(dto.getTipo());
         notificacion.setMensaje(dto.getMensaje());
-
-        // Le ponemos la hora actual si no viene en el DTO
         notificacion.setFechaEnvio(dto.getFechaEnvio() != null ? dto.getFechaEnvio() : LocalDateTime.now());
 
         Notificacion guardada = notificacionRepository.save(notificacion);
@@ -41,10 +46,12 @@ public class NotificacionService {
     }
 
     public void delete(Long id) {
+        if (!notificacionRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("No se pudo eliminar: Notificación ID " + id + " no encontrada.");
+        }
         notificacionRepository.deleteById(id);
     }
 
-    // Tu método regalón de mapeo
     private NotificacionDTO mapToDTO(Notificacion notificacion) {
         NotificacionDTO dto = new NotificacionDTO();
         dto.setId(notificacion.getId());

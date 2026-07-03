@@ -1,6 +1,7 @@
 package cl.duoc.producto_service.controller;
 
 import cl.duoc.producto_service.dto.ProductoDTO;
+import cl.duoc.producto_service.dto.ApiResponseDTO; // Importa tu DTO de respuesta
 import cl.duoc.producto_service.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,89 +17,66 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/productos")
-@Tag(name = "Catálogo de Productos", description = "API dedicada a la gestión integral del inventario de productos. Permite realizar operaciones CRUD con alta disponibilidad y coherencia de datos para el ecosistema microservicios.")
+@Tag(name = "Catálogo de Productos", description = "API dedicada a la gestión integral del inventario.")
 public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
 
-    @Operation(
-            summary = "Listado maestro de productos",
-            description = "Extrae la colección completa de productos activos disponibles en el catálogo central. Implementado para alimentar interfaces de usuario y sistemas de búsqueda."
-    )
+    @Operation(summary = "Listado maestro de productos")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Catálogo recuperado exitosamente.")
     })
     @GetMapping
-    public ResponseEntity<List<ProductoDTO>> obtenerTodos() {
-        return ResponseEntity.ok(productoService.findAll());
+    public ResponseEntity<ApiResponseDTO<List<ProductoDTO>>> obtenerTodos() {
+        List<ProductoDTO> data = productoService.findAll();
+        String mensaje = "Catálogo maestro de productos extraído.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Recuperar detalles técnicos del producto",
-            description = "Ejecuta un lookup de alta velocidad para obtener las especificaciones y metadata de un producto por su ID único. Endpoint fundamental para la comunicación entre servicios vía Feign."
-    )
+    @Operation(summary = "Recuperar detalles técnicos del producto")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Producto localizado correctamente."),
-            @ApiResponse(responseCode = "404", description = "El producto no existe en el catálogo.")
+            @ApiResponse(responseCode = "200", description = "Producto localizado."),
+            @ApiResponse(responseCode = "404", description = "Producto inexistente.")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoDTO> obtenerProductoPorId(
-            @Parameter(description = "ID del producto consultado", example = "101")
-            @PathVariable Long id
-    ) {
-        ProductoDTO producto = productoService.findById(id);
-        return producto != null ? ResponseEntity.ok(producto) : ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponseDTO<ProductoDTO>> obtenerProductoPorId(@PathVariable Long id) {
+        ProductoDTO data = productoService.findById(id);
+        String mensaje = "Detalles técnicos del producto recuperados con precisión.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Aprovisionar nuevo producto",
-            description = "Registra una nueva entidad de producto en el ecosistema, validando su estructura de datos y persistiendo el nuevo SKU en la base de datos central."
-    )
+    @Operation(summary = "Aprovisionar nuevo producto")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Producto registrado e integrado al inventario."),
-            @ApiResponse(responseCode = "400", description = "Error de validación en el payload del producto.")
+            @ApiResponse(responseCode = "201", description = "Producto registrado e integrado.")
     })
     @PostMapping
-    public ResponseEntity<ProductoDTO> crear(
-            @Parameter(description = "DTO con los datos del nuevo producto")
-            @RequestBody ProductoDTO dto
-    ) {
-        ProductoDTO creado = productoService.save(dto);
-        return new ResponseEntity<>(creado, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponseDTO<ProductoDTO>> crear(@RequestBody ProductoDTO dto) {
+        ProductoDTO data = productoService.save(dto);
+        String mensaje = "Nuevo SKU integrado al inventario central.";
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Actualizar atributos del producto",
-            description = "Modifica la información existente de un producto mediante un update transaccional. Asegura la coherencia de datos entre el inventario y el catálogo visual."
-    )
+    @Operation(summary = "Actualizar atributos del producto")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Producto actualizado satisfactoriamente."),
-            @ApiResponse(responseCode = "404", description = "Producto no encontrado para la actualización.")
+            @ApiResponse(responseCode = "200", description = "Producto actualizado.")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<ProductoDTO> actualizar(
-            @Parameter(description = "ID del producto a actualizar", example = "101")
-            @PathVariable Long id,
-            @RequestBody ProductoDTO dto
-    ) {
-        ProductoDTO actualizado = productoService.update(id, dto);
-        return actualizado != null ? ResponseEntity.ok(actualizado) : ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponseDTO<ProductoDTO>> actualizar(@PathVariable Long id, @RequestBody ProductoDTO dto) {
+        ProductoDTO data = productoService.update(id, dto);
+        String mensaje = "Atributos del producto sincronizados con éxito.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
     }
 
-    @Operation(
-            summary = "Descontinuar/Eliminar producto",
-            description = "Ejecuta el retiro definitivo de un producto del ecosistema, aplicando las reglas de negocio correspondientes para evitar inconsistencias en el carrito de compras."
-    )
+    @Operation(summary = "Descontinuar/Eliminar producto")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Producto eliminado exitosamente del catálogo.")
+            @ApiResponse(responseCode = "200", description = "Producto eliminado.")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(
-            @Parameter(description = "ID del producto a eliminar", example = "101")
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<ApiResponseDTO<Void>> eliminar(@PathVariable Long id) {
         productoService.delete(id);
-        return ResponseEntity.noContent().build();
+        String mensaje = "Producto erradicado del catálogo.";
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
     }
 }
