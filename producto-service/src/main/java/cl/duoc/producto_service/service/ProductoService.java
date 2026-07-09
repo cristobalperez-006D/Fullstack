@@ -25,7 +25,7 @@ public class ProductoService {
     public ProductoDTO findById(Long id) {
         return productoRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró el producto con ID: " + id));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado con ID: " + id));
     }
 
     public ProductoDTO save(ProductoDTO dto) {
@@ -48,7 +48,7 @@ public class ProductoService {
 
     public void delete(Long id) {
         if (!productoRepository.existsById(id)) {
-            throw new RecursoNoEncontradoException("Imposible borrar: Producto ID " + id + " no encontrado.");
+            throw new RecursoNoEncontradoException("No se puede eliminar, el producto no existe: " + id);
         }
         productoRepository.deleteById(id);
     }
@@ -59,5 +59,14 @@ public class ProductoService {
         dto.setNombre(producto.getNombre());
         dto.setPrecio(producto.getPrecio());
         return dto;
+    }
+    public List<ProductoDTO> findByNombre(String nombre) {
+        return productoRepository.findByNombreContainingIgnoreCase(nombre).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Long contarProductos() {
+        return productoRepository.count();
     }
 }

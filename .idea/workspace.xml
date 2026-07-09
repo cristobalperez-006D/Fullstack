@@ -5,47 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24c06cf6-14e8-4dca-a9e4-4d7c43c250f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/dto/ApiResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/exception/RecursoNoEncontradoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/ClienteDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/feign/ClienteFeignClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/controller/CarritoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/controller/CarritoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/CarritoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/CarritoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/ClienteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/ClienteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/ProductoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/dto/ProductoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/feign/ClienteFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/feign/ClienteFeignClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/feign/ProductoFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/feign/ProductoFeignClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/service/CarritoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/main/java/cl/duoc/carrito_service/service/CarritoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrito-service/src/test/java/cl/duoc/carrito_service/service/CarritoServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/carrito-service/src/test/java/cl/duoc/carrito_service/service/CarritoServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/controller/ClienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/controller/ClienteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/dto/ClienteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/dto/ClienteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/repository/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/repository/ClienteRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/service/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/main/java/cl/duoc/cliente_service/service/ClienteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cliente-service/src/test/java/cl/duoc/cliente_service/service/ClienteServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/cliente-service/src/test/java/cl/duoc/cliente_service/service/ClienteServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/controller/EnvioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/controller/EnvioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/dto/EnvioDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/dto/EnvioDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/service/EnvioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/main/java/cl/duoc/envios_service/service/EnvioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/envios-service/src/test/java/cl/duoc/envios_service/service/EnviosServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/envios-service/src/test/java/cl/duoc/envios_service/service/EnviosServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/controller/InventarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/controller/InventarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/dto/InventarioDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/dto/InventarioDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/service/InventarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/main/java/cl/duoc/inventario_service/service/InventarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventario-service/src/test/java/cl/duoc/inventario_service/service/InventarioServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventario-service/src/test/java/cl/duoc/inventario_service/service/InventarioServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/controller/NotificacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/controller/NotificacionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/dto/NotificacionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/dto/NotificacionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/repository/NotificacionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/repository/NotificacionRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/service/NotificacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/main/java/cl/duoc/notificaciones_service/service/NotificacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificaciones-service/src/test/java/cl/duoc/notificaciones_service/service/NotificacionesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificaciones-service/src/test/java/cl/duoc/notificaciones_service/service/NotificacionesServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/controller/PagoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/controller/PagoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/NotificacionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/NotificacionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/PagoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/dto/PagoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/feign/NotificacionFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/feign/NotificacionFeignClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/repository/PagoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/repository/PagoRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/service/PagoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/main/java/cl/duoc/pagos_service/service/PagoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagos-service/src/test/java/cl/duoc/pagos_service/service/PagosServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pagos-service/src/test/java/cl/duoc/pagos_service/service/PagosServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/controller/PedidoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/controller/PedidoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/dto/ClienteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/dto/ClienteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/dto/PedidoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/dto/PedidoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/feign/ClienteFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/feign/ClienteFeignClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/service/PedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/main/java/cl/duoc/pedidos_service/service/PedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/PedidosServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/PedidosServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/service/PedidosServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedidos-service/src/test/java/cl/duoc/pedidos_service/service/PedidosServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/controller/ProductoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/controller/ProductoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/dto/ProductoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/dto/ProductoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/repository/ProductoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/repository/ProductoRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/service/ProductoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/main/java/cl/duoc/producto_service/service/ProductoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producto-service/src/test/java/cl/duoc/producto_service/service/ProductoServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/producto-service/src/test/java/cl/duoc/producto_service/service/ProductoServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +74,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -93,6 +109,7 @@
     "JUnit.InventarioServiceTest.executor": "Run",
     "JUnit.NotificacionesServiceTest.executor": "Run",
     "JUnit.PagosServiceTest.executor": "Run",
+    "JUnit.PagosServiceTest.testRegistrarPago_DebeLanzarExcepcion_CuandoDatosSonInvalidos.executor": "Run",
     "JUnit.PedidosServiceApplicationTests (1).executor": "Run",
     "JUnit.PedidosServiceApplicationTests.executor": "Run",
     "JUnit.PedidosServiceTest.executor": "Run",
@@ -117,11 +134,12 @@
     "Spring Boot.PagosServiceApplication.executor": "Run",
     "Spring Boot.PedidosServiceApplication.executor": "Run",
     "Spring Boot.ProductoServiceApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/kevin/OneDrive/Desktop/Fullstack/producto-service/src/main/java/cl/duoc/producto_service",
+    "last_opened_file_path": "C:/Users/kevin/OneDrive/Desktop/Fullstack",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -142,11 +160,11 @@
       <recent name="C:\Users\kevin\OneDrive\Desktop\Fullstack\inventario-service\src\main\java\cl\duoc\inventario_service" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="cl.duoc.producto_service.dto" />
-      <recent name="cl.duoc.pedidos_service.dto" />
       <recent name="cl.duoc.pagos_service.dto" />
-      <recent name="cl.duoc.notificaciones_service.dto" />
-      <recent name="cl.duoc.inventario_service.dto" />
+      <recent name="cl.duoc.producto_service.exception" />
+      <recent name="cl.duoc.pedidos_service.exception" />
+      <recent name="cl.duoc.pagos_service.exception" />
+      <recent name="cl.duoc.notificaciones_service.exception" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -180,7 +198,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.CarritoServiceTest">
+  <component name="RunManager" selected="JUnit.PedidosServiceTest">
     <configuration name="CarritoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Carrito-service" />
       <extension name="coverage">
@@ -196,61 +214,62 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClienteServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Cliente-service" />
+    <configuration name="PagosServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pagos-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cl.duoc.cliente_service.service.*" />
+          <option name="PATTERN" value="cl.duoc.pagos_service.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="cl.duoc.cliente_service.service" />
-      <option name="MAIN_CLASS_NAME" value="cl.duoc.cliente_service.service.ClienteServiceTest" />
+      <option name="PACKAGE_NAME" value="cl.duoc.pagos_service.service" />
+      <option name="MAIN_CLASS_NAME" value="cl.duoc.pagos_service.service.PagosServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EnviosServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Envios-service" />
+    <configuration name="PagosServiceTest.testRegistrarPago_DebeLanzarExcepcion_CuandoDatosSonInvalidos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pagos-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cl.duoc.envios_service.service.*" />
+          <option name="PATTERN" value="cl.duoc.pagos_service.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="cl.duoc.envios_service.service" />
-      <option name="MAIN_CLASS_NAME" value="cl.duoc.envios_service.service.EnviosServiceTest" />
+      <option name="PACKAGE_NAME" value="cl.duoc.pagos_service.service" />
+      <option name="MAIN_CLASS_NAME" value="cl.duoc.pagos_service.service.PagosServiceTest" />
+      <option name="METHOD_NAME" value="testRegistrarPago_DebeLanzarExcepcion_CuandoDatosSonInvalidos" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PedidosServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pedidos-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cl.duoc.pedidos_service.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cl.duoc.pedidos_service.service" />
+      <option name="MAIN_CLASS_NAME" value="cl.duoc.pedidos_service.service.PedidosServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InventarioServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Inventario-service" />
+    <configuration name="ProductoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Producto-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cl.duoc.inventario_service.service.*" />
+          <option name="PATTERN" value="cl.duoc.producto_service.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="cl.duoc.inventario_service.service" />
-      <option name="MAIN_CLASS_NAME" value="cl.duoc.inventario_service.service.InventarioServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="NotificacionesServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Notificaciones-Service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cl.duoc.notificaciones_service.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="cl.duoc.notificaciones_service.service" />
-      <option name="MAIN_CLASS_NAME" value="cl.duoc.notificaciones_service.service.NotificacionesServiceTest" />
+      <option name="PACKAGE_NAME" value="cl.duoc.producto_service.service" />
+      <option name="MAIN_CLASS_NAME" value="cl.duoc.producto_service.service.ProductoServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -333,21 +352,39 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="JUnit.CarritoServiceTest" />
+      <item itemvalue="JUnit.PagosServiceTest" />
+      <item itemvalue="JUnit.PagosServiceTest.testRegistrarPago_DebeLanzarExcepcion_CuandoDatosSonInvalidos" />
+      <item itemvalue="JUnit.PedidosServiceTest" />
+      <item itemvalue="JUnit.ProductoServiceTest" />
+      <item itemvalue="Spring Boot.ApiGatewayApplication" />
+      <item itemvalue="Spring Boot.CarritoServiceApplication" />
+      <item itemvalue="Spring Boot.ClienteServiceApplication" />
+      <item itemvalue="Spring Boot.ConfigServerApplication" />
+      <item itemvalue="Spring Boot.EnviosServiceApplication" />
+      <item itemvalue="Spring Boot.EurekaServerApplication" />
+      <item itemvalue="Spring Boot.InventarioServiceApplication" />
+      <item itemvalue="Spring Boot.NotificacionesServiceApplication" />
+      <item itemvalue="Spring Boot.PagosServiceApplication" />
+      <item itemvalue="Spring Boot.PedidosServiceApplication" />
+      <item itemvalue="Spring Boot.ProductoServiceApplication" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PedidosServiceTest" />
+        <item itemvalue="JUnit.PagosServiceTest" />
         <item itemvalue="JUnit.CarritoServiceTest" />
-        <item itemvalue="JUnit.ClienteServiceTest" />
-        <item itemvalue="JUnit.EnviosServiceTest" />
-        <item itemvalue="JUnit.InventarioServiceTest" />
-        <item itemvalue="JUnit.NotificacionesServiceTest" />
+        <item itemvalue="JUnit.ProductoServiceTest" />
+        <item itemvalue="JUnit.PagosServiceTest.testRegistrarPago_DebeLanzarExcepcion_CuandoDatosSonInvalidos" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.33514.17" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.33514.17" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.26222.65" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.26222.65" />
       </set>
     </attachedChunks>
   </component>
@@ -361,6 +398,7 @@
       <workItem from="1782336188515" duration="2753000" />
       <workItem from="1782339029745" duration="248000" />
       <workItem from="1783031522521" duration="5366000" />
+      <workItem from="1783627835030" duration="9117000" />
     </task>
     <servers />
   </component>

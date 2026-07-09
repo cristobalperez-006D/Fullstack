@@ -1,6 +1,5 @@
 package cl.duoc.pedidos_service.service;
 
-import cl.duoc.pedidos_service.dto.ClienteDTO;
 import cl.duoc.pedidos_service.dto.PedidoDTO;
 import cl.duoc.pedidos_service.feign.ClienteFeignClient;
 import cl.duoc.pedidos_service.model.Pedido;
@@ -12,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,9 +28,20 @@ public class PedidosServiceApplicationTests {
 	@InjectMocks
 	private PedidoService pedidoService;
 
+	// Helper para el formato que espera el Service ahora
+	private Map<String, Object> crearMockResponse() {
+		Map<String, Object> mockResp = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+		data.put("id", 100L);
+		data.put("nombre", "Cristobal Perez");
+		data.put("email", "cris@duoc.cl");
+		mockResp.put("data", data);
+		return mockResp;
+	}
+
 	@Test
 	void testFindById_WithFeign() {
-		// Given: Preparamos un pedido y un cliente mockeado
+		// Given
 		Long pedidoId = 1L;
 		Long clienteId = 100L;
 
@@ -39,13 +49,10 @@ public class PedidosServiceApplicationTests {
 		pedido.setId(pedidoId);
 		pedido.setClienteId(clienteId);
 
-		ClienteDTO mockCliente = new ClienteDTO();
-		mockCliente.setId(clienteId);
-		mockCliente.setNombre("Cristobal Perez");
-
 		when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(pedido));
-		// Aquí le decimos a Mockito: "Cuando llamen al Feign, devuelve el mockCliente"
-		when(clienteFeignClient.obtenerClientePorId(clienteId)).thenReturn(mockCliente);
+
+		// CORREGIDO: Usamos el método RAW
+		when(clienteFeignClient.obtenerClienteRaw(clienteId)).thenReturn(crearMockResponse());
 
 		// When
 		PedidoDTO resultado = pedidoService.findById(pedidoId);
@@ -54,7 +61,7 @@ public class PedidosServiceApplicationTests {
 		assertNotNull(resultado);
 		assertNotNull(resultado.getCliente());
 		assertEquals("Cristobal Perez", resultado.getCliente().getNombre());
-		verify(clienteFeignClient, times(1)).obtenerClientePorId(clienteId);
+		verify(clienteFeignClient, times(1)).obtenerClienteRaw(clienteId);
 	}
 
 	@Test
@@ -69,8 +76,9 @@ public class PedidosServiceApplicationTests {
 		pedidoGuardado.setClienteId(100L);
 
 		when(pedidoRepository.save(any(Pedido.class))).thenReturn(pedidoGuardado);
-		// También mockeamos el cliente para que el mapToDTO no tire error
-		when(clienteFeignClient.obtenerClientePorId(100L)).thenReturn(new ClienteDTO());
+
+		// CORREGIDO: Usamos el método RAW y el helper
+		when(clienteFeignClient.obtenerClienteRaw(100L)).thenReturn(crearMockResponse());
 
 		// When
 		PedidoDTO resultado = pedidoService.crearPedido(dto);

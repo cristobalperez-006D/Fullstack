@@ -62,4 +62,13 @@ public class ClienteService {
         dto.setEmail(cliente.getEmail());
         return dto;
     }
+    public List<ClienteDTO> findByNombre(String nombre) {
+        return clienteRepository.findByNombreContainingIgnoreCase(nombre).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Long contarClientes() {
+        return clienteRepository.count();
+    }
 }

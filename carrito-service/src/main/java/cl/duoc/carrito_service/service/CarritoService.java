@@ -64,6 +64,9 @@ public class CarritoService {
     }
 
     public void eliminarItem(Long itemId) {
+        if (!carritoRepository.existsById(itemId)) {
+            throw new RecursoNoEncontradoException("No se encontró el ítem con ID: " + itemId);
+        }
         carritoRepository.deleteById(itemId);
     }
 
@@ -83,22 +86,46 @@ public class CarritoService {
             dto.setSubtotal(carrito.getPrecioUnitario().multiply(BigDecimal.valueOf(carrito.getCantidad())));
         }
 
-        // Recuperar Cliente
+        // --- REPARACIÓN BRÍGIDA ---
         try {
-            ClienteDTO cliente = clienteFeignClient.obtenerClientePorId(carrito.getClienteId());
-            dto.setCliente(cliente);
+            // Obtenemos un mapa genérico en lugar del DTO directo
+            java.util.Map<String, Object> resp = clienteFeignClient.obtenerClienteRaw(carrito.getClienteId());
+            if (resp.containsKey("data")) {
+                java.util.LinkedHashMap<String, Object> data = (java.util.LinkedHashMap<String, Object>) resp.get("data");
+                ClienteDTO cliente = new ClienteDTO();
+                cliente.setId(Long.valueOf(data.get("id").toString()));
+                cliente.setNombre((String) data.get("nombre"));
+                cliente.setEmail((String) data.get("email"));
+                dto.setCliente(cliente);
+            }
         } catch (Exception e) {
-            throw new RecursoNoEncontradoException("No se pudo vincular el cliente ID [" + carrito.getClienteId() + "] al carrito.");
+            dto.setCliente(null);
         }
 
-        // Recuperar Producto - CORREGIDO PARA LANZAR EXCEPCIÓN
         try {
-            ProductoDTO producto = productoFeignClient.obtenerProductoPorId(carrito.getProductoId());
-            dto.setProducto(producto);
+            java.util.Map<String, Object> resp = productoFeignClient.obtenerProductoRaw(carrito.getProductoId());
+            if (resp.containsKey("data")) {
+                java.util.LinkedHashMap<String, Object> data = (java.util.LinkedHashMap<String, Object>) resp.get("data");
+                ProductoDTO prod = new ProductoDTO();
+                prod.setId(Long.valueOf(data.get("id").toString()));
+                prod.setNombre((String) data.get("nombre"));
+                prod.setPrecio(new BigDecimal(data.get("precio").toString()));
+                dto.setProducto(prod);
+            }
         } catch (Exception e) {
-            throw new RecursoNoEncontradoException("No se pudo obtener el producto ID [" + carrito.getProductoId() + "] para este ítem.");
+            dto.setProducto(null);
         }
 
         return dto;
+    }
+    public boolean existeEnCarrito(Long clienteId, Long productoId) {
+        return carritoRepository.findByClienteIdAndProductoId(clienteId, productoId).isPresent();
+    }
+
+    public BigDecimal calcularTotalCarrito(Long clienteId) {
+        List<Carrito> items = carritoRepository.findByClienteId(clienteId);
+        return items.stream()
+                .map(i -> i.getPrecioUnitario().multiply(BigDecimal.valueOf(i.getCantidad())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

@@ -78,4 +78,28 @@ public class ProductoServiceTest {
         assertNotNull(resultado);
         assertEquals("Webcam", resultado.getNombre());
     }
+
+    @Test
+    void testFindById_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(productoRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(cl.duoc.producto_service.exception.RecursoNoEncontradoException.class, () -> {
+            productoService.findById(idInexistente);
+        });
+    }
+
+    @Test
+    void testDelete_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(productoRepository.existsById(idInexistente)).thenReturn(false);
+
+        // When & Then
+        assertThrows(cl.duoc.producto_service.exception.RecursoNoEncontradoException.class, () -> {
+            productoService.delete(idInexistente);
+        });
+    }
 }

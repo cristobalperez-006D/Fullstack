@@ -5,11 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-// ¡QUITAMOS el atributo 'path'!
 @FeignClient(name = "producto-service")
 public interface ProductoFeignClient {
-
-    // Ponemos la ruta completa aquí
-    @GetMapping("/api/productos/{id}")
-    ProductoDTO obtenerProductoPorId(@PathVariable("id") Long id);
+    @GetMapping("/api/v1/productos/{id}")
+    java.util.Map<String, Object> obtenerProductoRaw(@PathVariable("id") Long id);
 }

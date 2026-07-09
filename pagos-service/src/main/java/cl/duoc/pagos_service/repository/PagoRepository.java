@@ -10,4 +10,6 @@ import java.util.List;
 public interface PagoRepository extends JpaRepository<Pago, Long> {
     // Por si necesitas rescatar los pagos asociados a un pedido específico
     List<Pago> findByPedidoId(Long pedidoId);
+    List<Pago> findByClienteId(Long clienteId);
+
 }

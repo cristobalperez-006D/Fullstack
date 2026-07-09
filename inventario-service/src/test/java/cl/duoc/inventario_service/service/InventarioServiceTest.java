@@ -42,20 +42,30 @@ public class InventarioServiceTest {
     }
 
     @Test
-    void testRestarStock_InsufficientStock() {
+    void testRestarStock_InsufficientStock_LanzaExcepcion() {
         // Given
         Long prodId = 1L;
         Inventario inv = new Inventario();
         inv.setProductoId(prodId);
-        inv.setCantidad(2); // Tenemos solo 2
+        inv.setCantidad(2);
 
         when(inventarioRepository.findByProductoId(prodId)).thenReturn(inv);
 
-        // When: Queremos restar 5
-        InventarioDTO resultado = inventarioService.restarStock(prodId, 5);
-
-        // Then
-        assertNull(resultado); // Debe devolver null porque no alcanza
+        // When & Then
+        assertThrows(cl.duoc.inventario_service.exception.RecursoNoEncontradoException.class, () -> {
+            inventarioService.restarStock(prodId, 5); // Queremos restar 5, pero solo hay 2
+        });
         verify(inventarioRepository, never()).save(any(Inventario.class));
+    }
+    @Test
+    void testRestarStock_ProductoNoExiste() {
+        // Given
+        Long prodId = 999L;
+        when(inventarioRepository.findByProductoId(prodId)).thenReturn(null);
+
+        // When & Then
+        assertThrows(cl.duoc.inventario_service.exception.RecursoNoEncontradoException.class, () -> {
+            inventarioService.restarStock(prodId, 1);
+        });
     }
 }

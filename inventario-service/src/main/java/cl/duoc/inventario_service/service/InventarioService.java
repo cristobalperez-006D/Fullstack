@@ -39,22 +39,22 @@ public class InventarioService {
         return mapToDTO(guardado);
     }
 
-    public InventarioDTO restarStock(Long productoId, Integer cantidadComprada) {
+    public InventarioDTO restarStock(Long productoId, Integer cantidad) {
         Inventario inv = inventarioRepository.findByProductoId(productoId);
 
-        // Validamos que el producto exista primero
+        // 1. Validar si el producto existe en inventario
         if (inv == null) {
-            throw new RecursoNoEncontradoException("Producto ID " + productoId + " no encontrado en el inventario.");
+            throw new RecursoNoEncontradoException("Producto no encontrado en inventario: " + productoId);
         }
 
-        // Validamos el stock disponible
-        if (inv.getCantidad() < cantidadComprada) {
-            throw new RuntimeException("¡Puta la cuestión! Stock insuficiente para el producto ID " + productoId + ". Disponible: " + inv.getCantidad());
+        // 2. Validar stock suficiente
+        if (inv.getCantidad() < cantidad) {
+            throw new RecursoNoEncontradoException("Stock insuficiente para el producto: " + productoId);
         }
 
-        inv.setCantidad(inv.getCantidad() - cantidadComprada);
-        Inventario actualizado = inventarioRepository.save(inv);
-        return mapToDTO(actualizado);
+        // 3. Ejecutar operación
+        inv.setCantidad(inv.getCantidad() - cantidad);
+        return mapToDTO(inventarioRepository.save(inv));
     }
 
     public void delete(Long id) {
@@ -70,5 +70,22 @@ public class InventarioService {
         dto.setProductoId(inv.getProductoId());
         dto.setCantidad(inv.getCantidad());
         return dto;
+    }
+
+    public InventarioDTO sumarStock(Long productoId, Integer cantidad) {
+        Inventario inv = inventarioRepository.findByProductoId(productoId);
+        if (inv == null) {
+            throw new RecursoNoEncontradoException("No existe registro para sumar stock del producto: " + productoId);
+        }
+        inv.setCantidad(inv.getCantidad() + cantidad);
+        return mapToDTO(inventarioRepository.save(inv));
+    }
+
+    public boolean tieneStockCritico(Long productoId) {
+        Inventario inv = inventarioRepository.findByProductoId(productoId);
+        if (inv == null) {
+            throw new RecursoNoEncontradoException("Producto no encontrado: " + productoId);
+        }
+        return inv.getCantidad() < 5;
     }
 }

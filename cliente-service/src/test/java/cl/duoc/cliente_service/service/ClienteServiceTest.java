@@ -67,6 +67,8 @@ public class ClienteServiceTest {
     void testDelete_Success() {
         // Given
         Long id = 1L;
+        // ¡Aquí está la clave! Tienes que mockear que el cliente SÍ existe
+        when(clienteRepository.existsById(id)).thenReturn(true);
         doNothing().when(clienteRepository).deleteById(id);
 
         // When
@@ -74,5 +76,28 @@ public class ClienteServiceTest {
 
         // Then
         verify(clienteRepository, times(1)).deleteById(id);
+    }
+    @Test
+    void testFindById_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(clienteRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(cl.duoc.cliente_service.exception.RecursoNoEncontradoException.class, () -> {
+            clienteService.findById(idInexistente);
+        });
+    }
+
+    @Test
+    void testDelete_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(clienteRepository.existsById(idInexistente)).thenReturn(false);
+
+        // When & Then
+        assertThrows(cl.duoc.cliente_service.exception.RecursoNoEncontradoException.class, () -> {
+            clienteService.delete(idInexistente);
+        });
     }
 }

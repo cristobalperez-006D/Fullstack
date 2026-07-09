@@ -1,4 +1,4 @@
-package cl.duoc.carrito_service.dto;
+package cl.duoc.pagos_service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;

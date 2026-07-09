@@ -8,75 +8,79 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/carrito")
-@Tag(name = "Orquestación del Carrito", description = "Motor transaccional de alta concurrencia para la gestión temporal de intenciones de compra.")
+@Tag(name = "Carrito", description = "Gestión de la canasta de compras")
 public class CarritoController {
 
     @Autowired
     private CarritoService carritoService;
 
-    @Operation(summary = "Extraer la matriz global de carritos activos")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Extracción del estado global ejecutada sin anomalías.")
-    })
-    @GetMapping
+    @Operation(summary = "Listar todos los carritos")
+    @ApiResponse(responseCode = "200", description = "Operación exitosa")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<List<CarritoDTO>>> obtenerTodos() {
         List<CarritoDTO> data = carritoService.obtenerTodos();
-        String mensaje = "Matriz global de carritos extraída correctamente.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Lista extraída correctamente", data));
     }
 
-    @Operation(summary = "Anexar SKU al flujo de compra")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "El ítem fue acoplado al carrito con éxito."),
-            @ApiResponse(responseCode = "400", description = "Datos inconsistentes.")
-    })
-    @PostMapping("/agregar")
-    public ResponseEntity<ApiResponseDTO<CarritoDTO>> agregarItem(@RequestBody CarritoDTO carritoDTO) {
+    @Operation(summary = "Agregar ítem al carrito")
+    @ApiResponse(responseCode = "201", description = "Ítem agregado con éxito")
+    @PostMapping(value = "/agregar", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<CarritoDTO>> agregarItem(@Valid @RequestBody CarritoDTO carritoDTO) {
         CarritoDTO data = carritoService.agregarItem(carritoDTO);
-        String mensaje = "¡Ítem acoplado con éxito al ecosistema de compra!";
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), mensaje, data));
+                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), "Ítem acoplado con éxito", data));
     }
 
-    @Operation(summary = "Rescatar sesión de compra por identidad de cliente")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Canasta del usuario localizada.")
-    })
-    @GetMapping("/cliente/{clienteId}")
+    @Operation(summary = "Obtener carrito por cliente")
+    @ApiResponse(responseCode = "200", description = "Carrito encontrado")
+    @GetMapping(value = "/cliente/{clienteId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<List<CarritoDTO>>> obtenerCarrito(@PathVariable Long clienteId) {
         List<CarritoDTO> data = carritoService.obtenerCarritoPorCliente(clienteId);
-        String mensaje = "Canasta del cliente localizada con éxito.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Canasta localizada con éxito", data));
     }
 
-    @Operation(summary = "Expurgar ítem específico de la canasta")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "El elemento fue erradicado del carrito exitosamente.")
-    })
+    @Operation(summary = "Eliminar ítem")
+    @ApiResponse(responseCode = "204", description = "Ítem eliminado correctamente")
     @DeleteMapping("/eliminar/{itemId}")
-    public ResponseEntity<ApiResponseDTO<Void>> eliminarItem(@PathVariable Long itemId) {
+    public ResponseEntity<Void> eliminarItem(@PathVariable Long itemId) {
         carritoService.eliminarItem(itemId);
-        String mensaje = "Elemento eliminado de forma quirúrgica.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
+        return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Aniquilación total de la sesión de compra")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "La purga del carrito se completó.")
-    })
+    @Operation(summary = "Vaciar carrito")
+    @ApiResponse(responseCode = "204", description = "Carrito vaciado")
     @DeleteMapping("/vaciar/{clienteId}")
-    public ResponseEntity<ApiResponseDTO<Void>> vaciarCarrito(@PathVariable Long clienteId) {
+    public ResponseEntity<Void> vaciarCarrito(@PathVariable Long clienteId) {
         carritoService.vaciarCarrito(clienteId);
-        String mensaje = "Ecosistema de compra reiniciado a cero.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
+        return ResponseEntity.noContent().build();
+    }
+    @Operation(summary = "Verificar si un producto ya está en el carrito")
+    @ApiResponse(responseCode = "200", description = "Resultado de la verificación")
+    @GetMapping("/existe/{clienteId}/{productoId}")
+    public ResponseEntity<ApiResponseDTO<Boolean>> existeEnCarrito(
+            @PathVariable Long clienteId,
+            @PathVariable Long productoId) {
+        boolean existe = carritoService.existeEnCarrito(clienteId, productoId);
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Verificación realizada", existe));
+    }
+
+    @Operation(summary = "Calcular total a pagar")
+    @ApiResponse(responseCode = "200", description = "Total calculado")
+    @GetMapping("/total/{clienteId}")
+    public ResponseEntity<ApiResponseDTO<BigDecimal>> calcularTotal(@PathVariable Long clienteId) {
+        BigDecimal total = carritoService.calcularTotalCarrito(clienteId);
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Total calculado", total));
     }
 }

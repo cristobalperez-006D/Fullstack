@@ -23,9 +23,9 @@ public class EnvioService {
     }
 
     public EnvioDTO findById(Long id) {
-        return envioRepository.findById(id)
-                .map(this::mapToDTO)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró el envío con ID: " + id));
+        Envio envio = envioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Envío no encontrado con ID: " + id));
+        return mapToDTO(envio);
     }
 
     public EnvioDTO findByPedidoId(Long pedidoId) {
@@ -47,12 +47,11 @@ public class EnvioService {
         return mapToDTO(guardado);
     }
 
-    public EnvioDTO updateEstado(Long id, String nuevoEstado) {
-        return envioRepository.findById(id).map(e -> {
-            e.setEstado(nuevoEstado);
-            Envio actualizado = envioRepository.save(e);
-            return mapToDTO(actualizado);
-        }).orElseThrow(() -> new RecursoNoEncontradoException("No se pudo actualizar: El envío ID " + id + " no existe."));
+    public EnvioDTO updateEstado(Long id, String estado) {
+        Envio envio = envioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Envío no encontrado con ID: " + id));
+        envio.setEstado(estado);
+        return mapToDTO(envioRepository.save(envio));
     }
 
     public void delete(Long id) {
@@ -70,5 +69,10 @@ public class EnvioService {
         dto.setEstado(envio.getEstado());
         dto.setCodigoSeguimiento(envio.getCodigoSeguimiento());
         return dto;
+    }
+    public Long contarPorEstado(String estado) {
+        return envioRepository.findAll().stream()
+                .filter(e -> e.getEstado().equalsIgnoreCase(estado))
+                .count();
     }
 }

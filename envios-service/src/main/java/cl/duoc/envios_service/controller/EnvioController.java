@@ -7,8 +7,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,80 +18,68 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/envios")
-@Tag(name = "Gestión de Logística y Envíos", description = "Servicio core para la trazabilidad y monitoreo del flujo logístico.")
+@Tag(name = "Envíos", description = "Gestión logística y trazabilidad")
 public class EnvioController {
 
     @Autowired
     private EnvioService envioService;
 
-    @Operation(summary = "Recuperar el catálogo logístico completo")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Listado de envíos recuperado exitosamente.")
-    })
-    @GetMapping
+    @Operation(summary = "Recuperar el catálogo logístico")
+    @ApiResponse(responseCode = "200", description = "Operación exitosa")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<List<EnvioDTO>>> obtenerTodos() {
         List<EnvioDTO> data = envioService.findAll();
-        String mensaje = "Catálogo logístico extraído correctamente.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Catálogo extraído con éxito", data));
     }
 
-    @Operation(summary = "Localizar envío por Identificador Único")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Detalles del envío encontrados."),
-            @ApiResponse(responseCode = "404", description = "Registro no encontrado.")
-    })
-    @GetMapping("/{id}")
+    @Operation(summary = "Localizar envío por ID")
+    @ApiResponse(responseCode = "200", description = "Envío encontrado")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<EnvioDTO>> obtenerPorId(@PathVariable Long id) {
         EnvioDTO data = envioService.findById(id);
-        String mensaje = "Detalles técnicos del despacho recuperados.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Detalles recuperados", data));
     }
 
-    @Operation(summary = "Recuperar trazabilidad asociada a un pedido")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Trazabilidad encontrada."),
-            @ApiResponse(responseCode = "404", description = "No existe envío asociado.")
-    })
-    @GetMapping("/pedido/{pedidoId}")
+    @Operation(summary = "Trazabilidad por pedido")
+    @ApiResponse(responseCode = "200", description = "Trazabilidad encontrada")
+    @GetMapping(value = "/pedido/{pedidoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<EnvioDTO>> obtenerPorPedido(@PathVariable Long pedidoId) {
         EnvioDTO data = envioService.findByPedidoId(pedidoId);
-        String mensaje = "Trazabilidad del pedido compilada con éxito.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Trazabilidad localizada", data));
     }
 
-    @Operation(summary = "Registrar nuevo proceso de despacho")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Despacho inicializado.")
-    })
-    @PostMapping
-    public ResponseEntity<ApiResponseDTO<EnvioDTO>> crear(@RequestBody EnvioDTO dto) {
+    @Operation(summary = "Registrar nuevo despacho")
+    @ApiResponse(responseCode = "201", description = "Despacho inicializado")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<EnvioDTO>> crear(@Valid @RequestBody EnvioDTO dto) {
         EnvioDTO data = envioService.save(dto);
-        String mensaje = "Ciclo de vida logístico iniciado para el pedido.";
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), mensaje, data));
+                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), "Ciclo logístico iniciado", data));
     }
 
-    @Operation(summary = "Actualizar estado operativo del envío")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Estado sincronizado.")
-    })
+    @Operation(summary = "Actualizar estado logístico")
+    @ApiResponse(responseCode = "200", description = "Estado sincronizado")
     @PutMapping("/{id}/estado")
     public ResponseEntity<ApiResponseDTO<EnvioDTO>> actualizarEstado(
             @PathVariable Long id,
             @RequestParam String estado) {
         EnvioDTO data = envioService.updateEstado(id, estado);
-        String mensaje = "Transición de estado logístico ejecutada exitosamente.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Estado actualizado", data));
     }
 
-    @Operation(summary = "Eliminación de registros logísticos")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Registro erradicado con éxito.")
-    })
+    @Operation(summary = "Purgar registro logístico")
+    @ApiResponse(responseCode = "204", description = "Registro eliminado")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDTO<Void>> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         envioService.delete(id);
-        String mensaje = "El registro logístico fue purgado del sistema.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Contar envíos por estado (ej: PENDIENTE, ENVIADO)")
+    @ApiResponse(responseCode = "200", description = "Conteo realizado")
+    @GetMapping(value = "/count-estado/{estado}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<Long>> contarPorEstado(@PathVariable String estado) {
+        Long total = envioService.contarPorEstado(estado);
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Conteo exitoso", total));
     }
 }

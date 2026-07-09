@@ -1,12 +1,13 @@
 package cl.duoc.pagos_service.feign;
 
-import cl.duoc.pagos_service.dto.NotificacionDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-@FeignClient(name = "notificaciones-service", path = "/api/notificaciones")
+
+import java.util.Map;
+
+@FeignClient(name = "notificaciones-service", path = "/api/v1/notificaciones")
 public interface NotificacionFeignClient {
     @PostMapping
-    NotificacionDTO crear(@RequestBody NotificacionDTO dto);
+    Map<String, Object> crear(@RequestBody Object dto); // Enviamos el objeto, recibimos el mapa
 }
-

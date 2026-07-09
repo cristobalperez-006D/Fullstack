@@ -61,4 +61,21 @@ public class NotificacionService {
         dto.setFechaEnvio(notificacion.getFechaEnvio());
         return dto;
     }
+    public Long contarPorCliente(Long clienteId) {
+        return notificacionRepository.countByClienteId(clienteId);
+    }
+
+    public Long contarPorTipo(String tipo) {
+        // Ojo: Si quieres esto, deberías agregar "Long countByTipo(String tipo);" en tu Repository
+        return notificacionRepository.findAll().stream()
+                .filter(n -> n.getTipo().equalsIgnoreCase(tipo))
+                .count();
+    }
+
+    public void limpiarNotificacionesAntiguas(Long clienteId) {
+        List<Notificacion> viejas = notificacionRepository.findByClienteId(clienteId).stream()
+                .filter(n -> n.getFechaEnvio().isBefore(LocalDateTime.now().minusDays(30)))
+                .collect(Collectors.toList());
+        notificacionRepository.deleteAll(viejas);
+    }
 }

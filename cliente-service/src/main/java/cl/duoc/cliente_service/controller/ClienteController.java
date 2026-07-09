@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,66 +19,63 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/clientes")
-@Tag(name = "Gestión de Identidad de Clientes", description = "Servicio core para la administración y consulta del repositorio de usuarios.")
+@Tag(name = "Clientes", description = "Administración del repositorio de usuarios")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
     @Operation(summary = "Extraer directorio de clientes")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Directorio de clientes recuperado satisfactoriamente.")
-    })
-    @GetMapping
+    @ApiResponse(responseCode = "200", description = "Operación exitosa")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<List<ClienteDTO>>> obtenerTodos() {
         List<ClienteDTO> data = clienteService.findAll();
-        String mensaje = "Directorio completo de clientes recuperado.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Directorio recuperado", data));
     }
 
-    @Operation(summary = "Recuperar perfil de cliente por ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Perfil encontrado."),
-            @ApiResponse(responseCode = "404", description = "Cliente no encontrado.")
-    })
-    @GetMapping("/{id}")
+    @Operation(summary = "Recuperar perfil por ID")
+    @ApiResponse(responseCode = "200", description = "Perfil encontrado")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<ClienteDTO>> obtenerPorId(@PathVariable Long id) {
         ClienteDTO data = clienteService.findById(id);
-        String mensaje = "Perfil del cliente extraído con precisión.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Perfil encontrado", data));
     }
 
     @Operation(summary = "Aprovisionar nuevo cliente")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Cliente integrado al sistema.")
-    })
-    @PostMapping
-    public ResponseEntity<ApiResponseDTO<ClienteDTO>> crear(@RequestBody ClienteDTO dto) {
+    @ApiResponse(responseCode = "201", description = "Cliente integrado")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<ClienteDTO>> crear(@Valid @RequestBody ClienteDTO dto) {
         ClienteDTO data = clienteService.save(dto);
-        String mensaje = "Nuevo perfil de cliente aprovisionado exitosamente.";
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), mensaje, data));
+                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), "Cliente registrado", data));
     }
 
-    @Operation(summary = "Actualizar datos maestros del perfil")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Perfil actualizado.")
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponseDTO<ClienteDTO>> actualizar(@PathVariable Long id, @RequestBody ClienteDTO dto) {
+    @Operation(summary = "Actualizar perfil")
+    @ApiResponse(responseCode = "200", description = "Perfil actualizado")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<ClienteDTO>> actualizar(@PathVariable Long id, @Valid @RequestBody ClienteDTO dto) {
         ClienteDTO data = clienteService.update(id, dto);
-        String mensaje = "Datos maestros del perfil sincronizados correctamente.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Perfil actualizado", data));
     }
 
-    @Operation(summary = "Baja de cliente en el sistema")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Perfil eliminado.")
-    })
+    @Operation(summary = "Baja de cliente")
+    @ApiResponse(responseCode = "204", description = "Perfil eliminado")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDTO<Void>> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         clienteService.delete(id);
-        String mensaje = "El perfil del cliente ha sido purgado del repositorio.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
+        return ResponseEntity.noContent().build();
+    }
+    @Operation(summary = "Buscar clientes por nombre")
+    @GetMapping(value = "/search/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<List<ClienteDTO>>> buscarPorNombre(@PathVariable String nombre) {
+        List<ClienteDTO> data = clienteService.findByNombre(nombre);
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Búsqueda exitosa", data));
+    }
+
+    @Operation(summary = "Obtener conteo total de clientes")
+    @GetMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<Long>> contar() {
+        Long total = clienteService.contarClientes();
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Conteo exitoso", total));
     }
 }

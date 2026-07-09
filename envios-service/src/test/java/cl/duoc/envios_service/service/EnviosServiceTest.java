@@ -64,4 +64,27 @@ public class EnviosServiceTest {
         assertNotNull(resultado);
         verify(envioRepository, times(1)).save(e);
     }
+    @Test
+    void testFindById_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(envioRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(cl.duoc.envios_service.exception.RecursoNoEncontradoException.class, () -> {
+            envioService.findById(idInexistente);
+        });
+    }
+
+    @Test
+    void testUpdateEstado_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(envioRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(cl.duoc.envios_service.exception.RecursoNoEncontradoException.class, () -> {
+            envioService.updateEstado(idInexistente, "ENTREGADO");
+        });
+    }
 }

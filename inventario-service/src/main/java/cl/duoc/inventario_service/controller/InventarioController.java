@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,69 +19,70 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/inventario")
-@Tag(name = "Gestión de Inventario y Stock", description = "Motor de control de activos y existencias.")
+@Tag(name = "Inventario", description = "Gestión de activos y existencias")
 public class InventarioController {
 
     @Autowired
     private InventarioService inventarioService;
 
     @Operation(summary = "Consultar inventario global")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Listado de inventario recuperado correctamente.")
-    })
-    @GetMapping
+    @ApiResponse(responseCode = "200", description = "Operación exitosa")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<List<InventarioDTO>>> obtenerTodos() {
         List<InventarioDTO> data = inventarioService.findAll();
-        String mensaje = "Matriz de inventario extraída con éxito.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Inventario extraído", data));
     }
 
-    @Operation(summary = "Recuperar disponibilidad por ID de producto")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Stock consultado con éxito."),
-            @ApiResponse(responseCode = "404", description = "Producto inexistente.")
-    })
-    @GetMapping("/producto/{productoId}")
+    @Operation(summary = "Recuperar disponibilidad por producto")
+    @ApiResponse(responseCode = "200", description = "Stock encontrado")
+    @GetMapping(value = "/producto/{productoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDTO<InventarioDTO>> obtenerPorProducto(@PathVariable Long productoId) {
         InventarioDTO data = inventarioService.findByProductoId(productoId);
-        String mensaje = "Disponibilidad del producto recuperada.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Disponibilidad recuperada", data));
     }
 
-    @Operation(summary = "Registrar nuevo ítem en inventario")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Registro creado satisfactoriamente.")
-    })
-    @PostMapping
-    public ResponseEntity<ApiResponseDTO<InventarioDTO>> crear(@RequestBody InventarioDTO dto) {
+    @Operation(summary = "Registrar nuevo ítem")
+    @ApiResponse(responseCode = "201", description = "Registro creado")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<InventarioDTO>> crear(@Valid @RequestBody InventarioDTO dto) {
         InventarioDTO data = inventarioService.save(dto);
-        String mensaje = "Registro de inventario inicializado correctamente.";
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), mensaje, data));
+                .body(new ApiResponseDTO<>(HttpStatus.CREATED.value(), "Registro inicializado", data));
     }
 
     @Operation(summary = "Reducción transaccional de stock")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Stock descontado exitosamente."),
-            @ApiResponse(responseCode = "400", description = "Stock insuficiente.")
-    })
+    @ApiResponse(responseCode = "200", description = "Stock descontado")
     @PutMapping("/restar/{productoId}")
     public ResponseEntity<ApiResponseDTO<InventarioDTO>> restarStock(
             @PathVariable Long productoId,
             @RequestParam Integer cantidad) {
         InventarioDTO data = inventarioService.restarStock(productoId, cantidad);
-        String mensaje = "Operación de descuento ejecutada sin anomalías.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, data));
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Descuento ejecutado", data));
     }
 
-    @Operation(summary = "Purga de registros de inventario")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Registro eliminado.")
-    })
+    @Operation(summary = "Purga de registros")
+    @ApiResponse(responseCode = "204", description = "Registro eliminado")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDTO<Void>> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         inventarioService.delete(id);
-        String mensaje = "El registro ha sido erradicado del sistema.";
-        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), mensaje, null));
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Reabastecimiento de existencias")
+    @ApiResponse(responseCode = "200", description = "Stock incrementado")
+    @PutMapping("/sumar/{productoId}")
+    public ResponseEntity<ApiResponseDTO<InventarioDTO>> sumarStock(
+            @PathVariable Long productoId,
+            @RequestParam Integer cantidad) {
+        InventarioDTO data = inventarioService.sumarStock(productoId, cantidad);
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Stock sumado exitosamente", data));
+    }
+
+    @Operation(summary = "Consultar alerta de stock bajo")
+    @ApiResponse(responseCode = "200", description = "Estado de alerta retornado")
+    @GetMapping("/alerta/{productoId}")
+    public ResponseEntity<ApiResponseDTO<Boolean>> esStockCritico(@PathVariable Long productoId) {
+        boolean esCritico = inventarioService.tieneStockCritico(productoId);
+        return ResponseEntity.ok(new ApiResponseDTO<>(HttpStatus.OK.value(), "Consulta de alerta", esCritico));
     }
 }

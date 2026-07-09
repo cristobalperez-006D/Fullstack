@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface NotificacionRepository extends JpaRepository<Notificacion, Long> {
     List<Notificacion> findByClienteId(Long clienteId);
+
+    Long countByClienteId(Long clienteId);
 }

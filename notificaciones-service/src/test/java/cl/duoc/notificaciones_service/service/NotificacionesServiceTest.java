@@ -63,4 +63,28 @@ public class NotificacionesServiceTest {
         assertEquals(1, resultado.size());
         assertEquals(1L, resultado.get(0).getClienteId());
     }
+    @Test
+    void testDelete_DebeLanzarExcepcion_CuandoNoExiste() {
+        // Given
+        Long idInexistente = 999L;
+        when(notificacionRepository.existsById(idInexistente)).thenReturn(false);
+
+        // When & Then
+        assertThrows(cl.duoc.notificaciones_service.exception.RecursoNoEncontradoException.class, () -> {
+            notificacionService.delete(idInexistente);
+        });
+    }
+
+    @Test
+    void testFindByClienteId_DebeLanzarExcepcion_CuandoNoHayNotificaciones() {
+        // Given
+        Long idCliente = 1L;
+        when(notificacionRepository.findByClienteId(idCliente)).thenReturn(java.util.Collections.emptyList());
+
+        // When & Then - Ojo: si no hay notificaciones, ¿prefieres que lance error o una lista vacía?
+        // Si quieres que lance error (para que el front sepa que el user no tiene nada):
+        assertThrows(cl.duoc.notificaciones_service.exception.RecursoNoEncontradoException.class, () -> {
+            notificacionService.findByClienteId(idCliente);
+        });
+    }
 }
