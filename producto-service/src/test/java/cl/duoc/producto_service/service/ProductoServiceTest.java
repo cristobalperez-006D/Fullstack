@@ -102,4 +102,46 @@ public class ProductoServiceTest {
             productoService.delete(idInexistente);
         });
     }
+
+    @Test
+    void testUpdate_Success() {
+        // Given
+        Long id = 1L;
+        ProductoDTO dto = new ProductoDTO();
+        dto.setNombre("Monitor Gamer");
+        dto.setPrecio(new BigDecimal("200000"));
+
+        Producto pExistente = new Producto();
+        pExistente.setId(id);
+        pExistente.setNombre("Monitor Normal");
+
+        when(productoRepository.findById(id)).thenReturn(Optional.of(pExistente));
+        when(productoRepository.save(any(Producto.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        // When
+        ProductoDTO resultado = productoService.update(id, dto);
+
+        // Then
+        assertEquals("Monitor Gamer", resultado.getNombre());
+        verify(productoRepository).save(any(Producto.class));
+    }
+
+    @Test
+    void testFindByNombreYContar() {
+        // Given
+        Producto p = new Producto();
+        p.setNombre("Monitor");
+        when(productoRepository.findByNombreContainingIgnoreCase("Monitor")).thenReturn(Arrays.asList(p));
+        when(productoRepository.count()).thenReturn(1L);
+
+        // When
+        List<ProductoDTO> lista = productoService.findByNombre("Monitor");
+        Long total = productoService.contarProductos();
+
+        // Then
+        assertEquals(1, lista.size());
+        assertEquals(1L, total);
+        verify(productoRepository).findByNombreContainingIgnoreCase("Monitor");
+        verify(productoRepository).count();
+    }
 }

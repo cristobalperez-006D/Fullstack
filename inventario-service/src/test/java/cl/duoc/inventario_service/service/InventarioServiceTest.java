@@ -68,4 +68,61 @@ public class InventarioServiceTest {
             inventarioService.restarStock(prodId, 1);
         });
     }
+
+    // --- TEST 4: Buscar por ProductoId exitosamente ---
+    @Test
+    void testFindByProductoId_Success() {
+        Long prodId = 1L;
+        Inventario inv = new Inventario();
+        inv.setProductoId(prodId);
+        inv.setCantidad(10);
+        when(inventarioRepository.findByProductoId(prodId)).thenReturn(inv);
+
+        var resultado = inventarioService.findByProductoId(prodId);
+
+        assertNotNull(resultado);
+        assertEquals(prodId, resultado.getProductoId());
+    }
+
+    // --- TEST 5: Guardar nuevo registro ---
+    @Test
+    void testSave_Success() {
+        InventarioDTO dto = new InventarioDTO();
+        dto.setProductoId(1L);
+        dto.setCantidad(10);
+
+        when(inventarioRepository.save(any(Inventario.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        var resultado = inventarioService.save(dto);
+
+        assertNotNull(resultado);
+        verify(inventarioRepository, times(1)).save(any(Inventario.class));
+    }
+
+    // --- TEST 6: Sumar stock exitosamente ---
+    @Test
+    void testSumarStock_Success() {
+        Long prodId = 1L;
+        Inventario inv = new Inventario();
+        inv.setProductoId(prodId);
+        inv.setCantidad(5);
+        when(inventarioRepository.findByProductoId(prodId)).thenReturn(inv);
+        when(inventarioRepository.save(any(Inventario.class))).thenReturn(inv);
+
+        var resultado = inventarioService.sumarStock(prodId, 5);
+
+        assertEquals(10, resultado.getCantidad());
+        verify(inventarioRepository).save(inv);
+    }
+
+    // --- TEST 7: Listar todo el inventario ---
+    @Test
+    void testFindAll_Success() {
+        when(inventarioRepository.findAll()).thenReturn(java.util.List.of(new Inventario(), new Inventario()));
+
+        var resultado = inventarioService.findAll();
+
+        assertEquals(2, resultado.size());
+        verify(inventarioRepository, times(1)).findAll();
+    }
 }

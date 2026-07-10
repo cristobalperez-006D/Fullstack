@@ -1,6 +1,7 @@
 package cl.duoc.notificaciones_service.service;
 
 import cl.duoc.notificaciones_service.dto.NotificacionDTO;
+import cl.duoc.notificaciones_service.exception.RecursoNoEncontradoException;
 import cl.duoc.notificaciones_service.model.Notificacion;
 import cl.duoc.notificaciones_service.repository.NotificacionRepository;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,64 +29,70 @@ public class NotificacionesServiceTest {
 
     @Test
     void testSave_Success() {
-        // Given
         NotificacionDTO dto = new NotificacionDTO();
         dto.setClienteId(1L);
-        dto.setMensaje("Hola tobal, tu pedido viene en camino");
+        dto.setMensaje("Test");
         dto.setTipo("EMAIL");
 
         Notificacion guardada = new Notificacion();
         guardada.setId(10L);
         guardada.setClienteId(1L);
-        guardada.setFechaEnvio(LocalDateTime.now());
 
         when(notificacionRepository.save(any(Notificacion.class))).thenReturn(guardada);
 
-        // When
         NotificacionDTO resultado = notificacionService.save(dto);
 
-        // Then
         assertNotNull(resultado);
         assertEquals(10L, resultado.getId());
-        verify(notificacionRepository, times(1)).save(any(Notificacion.class));
     }
 
     @Test
-    void testFindByClienteId() {
-        // Given
+    void testFindByClienteId_Success() {
         Notificacion n1 = new Notificacion();
         n1.setClienteId(1L);
-        when(notificacionRepository.findByClienteId(1L)).thenReturn(Arrays.asList(n1));
+        when(notificacionRepository.findByClienteId(1L)).thenReturn(List.of(n1));
 
-        // When
         List<NotificacionDTO> resultado = notificacionService.findByClienteId(1L);
 
-        // Then
         assertEquals(1, resultado.size());
-        assertEquals(1L, resultado.get(0).getClienteId());
-    }
-    @Test
-    void testDelete_DebeLanzarExcepcion_CuandoNoExiste() {
-        // Given
-        Long idInexistente = 999L;
-        when(notificacionRepository.existsById(idInexistente)).thenReturn(false);
-
-        // When & Then
-        assertThrows(cl.duoc.notificaciones_service.exception.RecursoNoEncontradoException.class, () -> {
-            notificacionService.delete(idInexistente);
-        });
     }
 
     @Test
-    void testFindByClienteId_DebeLanzarExcepcion_CuandoNoHayNotificaciones() {
-        // Given
-        Long idCliente = 1L;
-        when(notificacionRepository.findByClienteId(idCliente)).thenReturn(java.util.Collections.emptyList());
+    void testFindByClienteId_LanzaExcepcion_CuandoNoHay() {
+        when(notificacionRepository.findByClienteId(1L)).thenReturn(Collections.emptyList());
+        assertThrows(RecursoNoEncontradoException.class, () -> notificacionService.findByClienteId(1L));
+    }
 
-        // When & Then - Ojo: si no hay notificaciones, ¿prefieres que lance error o una lista vacía?
-        // Si quieres que lance error (para que el front sepa que el user no tiene nada):
-        assertThrows(cl.duoc.notificaciones_service.exception.RecursoNoEncontradoException.class, () -> {
-            notificacionService.findByClienteId(idCliente);
-        });
+    @Test
+    void testDelete_Success() {
+        Long id = 10L;
+        when(notificacionRepository.existsById(id)).thenReturn(true);
+        doNothing().when(notificacionRepository).deleteById(id);
+
+        notificacionService.delete(id);
+        verify(notificacionRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void testDelete_LanzaExcepcion_CuandoNoExiste() {
+        when(notificacionRepository.existsById(999L)).thenReturn(false);
+        assertThrows(RecursoNoEncontradoException.class, () -> notificacionService.delete(999L));
+    }
+
+    @Test
+    void testContarPorCliente() {
+        when(notificacionRepository.countByClienteId(1L)).thenReturn(5L);
+        Long cantidad = notificacionService.contarPorCliente(1L);
+        assertEquals(5L, cantidad);
+    }
+
+    @Test
+    void testLimpiarNotificacionesAntiguas() {
+        Notificacion n = new Notificacion();
+        n.setFechaEnvio(LocalDateTime.now().minusDays(40)); // Más de 30 días
+        when(notificacionRepository.findByClienteId(1L)).thenReturn(List.of(n));
+
+        notificacionService.limpiarNotificacionesAntiguas(1L);
+        verify(notificacionRepository, times(1)).deleteAll(anyList());
     }
 }

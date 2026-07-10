@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -108,5 +109,49 @@ public class PedidosServiceTest {
         assertThrows(RuntimeException.class, () -> {
             pedidoService.crearPedido(dto);
         });
+    }
+
+    @Test
+    void testActualizarEstado_Success() {
+        Long id = 1L;
+        Pedido p = new Pedido();
+        p.setId(id);
+        p.setEstado("PENDIENTE");
+
+        when(pedidoRepository.findById(id)).thenReturn(Optional.of(p));
+        when(pedidoRepository.save(any(Pedido.class))).thenReturn(p);
+        // Necesario para el mapToDTO
+        when(clienteFeignClient.obtenerClienteRaw(anyLong())).thenReturn(crearMockResponse());
+
+        PedidoDTO resultado = pedidoService.actualizarEstado(id, "PAGADO");
+
+        assertEquals("PAGADO", resultado.getEstado());
+        verify(pedidoRepository).save(any(Pedido.class));
+    }
+
+    // --- TEST 6: Eliminar pedido exitosamente ---
+    @Test
+    void testDelete_Success() {
+        Long id = 1L;
+        when(pedidoRepository.existsById(id)).thenReturn(true);
+        doNothing().when(pedidoRepository).deleteById(id);
+
+        pedidoService.delete(id);
+
+        verify(pedidoRepository, times(1)).deleteById(id);
+    }
+
+    // --- TEST 7: Calcular total gastado por cliente ---
+    @Test
+    void testCalcularTotalGastadoPorCliente_Success() {
+        Long clienteId = 100L;
+        Pedido p1 = new Pedido(); p1.setMontoTotal(new BigDecimal("1000"));
+        Pedido p2 = new Pedido(); p2.setMontoTotal(new BigDecimal("2000"));
+
+        when(pedidoRepository.findByClienteId(clienteId)).thenReturn(List.of(p1, p2));
+
+        BigDecimal total = pedidoService.calcularTotalGastadoPorCliente(clienteId);
+
+        assertEquals(new BigDecimal("3000"), total);
     }
 }

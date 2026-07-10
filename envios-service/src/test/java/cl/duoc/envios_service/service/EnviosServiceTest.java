@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,5 +87,43 @@ public class EnviosServiceTest {
         assertThrows(cl.duoc.envios_service.exception.RecursoNoEncontradoException.class, () -> {
             envioService.updateEstado(idInexistente, "ENTREGADO");
         });
+    }
+    @Test
+    void testFindById_Success() {
+        Long id = 1L;
+        Envio e = new Envio();
+        e.setId(id);
+        e.setEstado("PENDIENTE");
+
+        when(envioRepository.findById(id)).thenReturn(Optional.of(e));
+
+        EnvioDTO resultado = envioService.findById(id);
+
+        assertNotNull(resultado);
+        assertEquals(id, resultado.getId());
+    }
+
+    @Test
+    void testDelete_Success() {
+        Long id = 1L;
+        when(envioRepository.existsById(id)).thenReturn(true);
+        doNothing().when(envioRepository).deleteById(id);
+
+        envioService.delete(id);
+
+        verify(envioRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void testFindAll_Success() {
+        Envio e1 = new Envio();
+        Envio e2 = new Envio();
+
+        when(envioRepository.findAll()).thenReturn(List.of(e1, e2));
+
+        List<EnvioDTO> resultado = envioService.findAll();
+
+        assertEquals(2, resultado.size());
+        verify(envioRepository, times(1)).findAll();
     }
 }

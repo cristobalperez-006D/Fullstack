@@ -40,6 +40,7 @@ public class CarritoServiceTest {
         return mockResp;
     }
 
+    // --- TEST 1 ---
     @Test
     void testAgregarItem_SumaCantidad_NuevoItem() {
         CarritoDTO dto = new CarritoDTO();
@@ -60,6 +61,7 @@ public class CarritoServiceTest {
         assertEquals(2, resultado.getCantidad());
     }
 
+    // --- TEST 2 ---
     @Test
     void testAgregarItem_SumaCantidad() {
         CarritoDTO dto = new CarritoDTO();
@@ -83,6 +85,7 @@ public class CarritoServiceTest {
         assertEquals(3, resultado.getCantidad());
     }
 
+    // --- TEST 3 ---
     @Test
     void testEliminarItem_DebeLanzarExcepcion_CuandoNoExiste() {
         Long idInexistente = 999L;
@@ -93,6 +96,7 @@ public class CarritoServiceTest {
         });
     }
 
+    // --- TEST 4 ---
     @Test
     void testCalcularTotalCarrito_SumaCorrectamente() {
         Long clienteId = 1L;
@@ -108,5 +112,60 @@ public class CarritoServiceTest {
 
         BigDecimal total = carritoService.calcularTotalCarrito(clienteId);
         assertEquals(new BigDecimal("2500"), total);
+    }
+
+    // --- TEST 5 (NUEVO) ---
+    @Test
+    void testEliminarItem_Exito() {
+        Long idItem = 1L;
+        when(carritoRepository.existsById(idItem)).thenReturn(true);
+        doNothing().when(carritoRepository).deleteById(idItem);
+
+        assertDoesNotThrow(() -> carritoService.eliminarItem(idItem));
+        verify(carritoRepository, times(1)).deleteById(idItem);
+    }
+
+    // --- TEST 6 (NUEVO) ---
+    @Test
+    void testCalcularTotalCarrito_CarritoVacio() {
+        Long clienteId = 1L;
+        when(carritoRepository.findByClienteId(clienteId)).thenReturn(Collections.emptyList());
+
+        BigDecimal total = carritoService.calcularTotalCarrito(clienteId);
+
+        // Si no hay items, el total debería ser cero
+        assertEquals(BigDecimal.ZERO, total);
+    }
+
+    // --- TEST 7 (NUEVO) ---
+    @Test
+    void testAgregarItem_ClienteNoEncontrado_LanzaExcepcion() {
+        CarritoDTO dto = new CarritoDTO();
+        dto.setClienteId(999L);
+        dto.setProductoId(10L);
+
+        // Usamos lenient() para que Mockito no se ponga pesado si el stub no se alcanza a usar
+        lenient().when(clienteFeignClient.obtenerClienteRaw(999L))
+                .thenThrow(new RuntimeException("Cliente no encontrado"));
+
+        assertThrows(RuntimeException.class, () -> {
+            carritoService.agregarItem(dto);
+        });
+    }
+    // --- TEST 8 (NUEVO) ---
+    @Test
+    void testAgregarItem_ProductoNoEncontrado_LanzaExcepcion() {
+        CarritoDTO dto = new CarritoDTO();
+        dto.setClienteId(1L);
+        dto.setProductoId(999L);
+
+        // Usamos lenient() en los dos mockeos para que Mockito no llore
+        lenient().when(clienteFeignClient.obtenerClienteRaw(1L)).thenReturn(crearMockResponse());
+        lenient().when(productoFeignClient.obtenerProductoRaw(999L))
+                .thenThrow(new RuntimeException("Producto no encontrado"));
+
+        assertThrows(RuntimeException.class, () -> {
+            carritoService.agregarItem(dto);
+        });
     }
 }

@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -95,5 +97,54 @@ public class PagosServiceTest {
 
         // Then: Verificamos que el pago NO falló y el Service no lanzó excepción
         assertNotNull(resultado);
+    }
+
+
+    @Test
+    void testFindById_Success() {
+        Long id = 1L;
+        Pago p = new Pago();
+        p.setId(id);
+        when(pagoRepository.findById(id)).thenReturn(Optional.of(p));
+        // Mock del cliente para el mapeo a DTO
+        when(clienteFeignClient.obtenerClienteRaw(anyLong())).thenReturn(new HashMap<>());
+
+        PagoDTO resultado = pagoService.findById(id);
+        assertNotNull(resultado);
+        assertEquals(id, resultado.getId());
+    }
+
+    @Test
+    void testFindByPedidoId_Success() {
+        Long pedidoId = 500L;
+        Pago p = new Pago();
+        p.setPedidoId(pedidoId);
+        when(pagoRepository.findByPedidoId(pedidoId)).thenReturn(List.of(p));
+        when(clienteFeignClient.obtenerClienteRaw(anyLong())).thenReturn(new HashMap<>());
+
+        List<PagoDTO> resultado = pagoService.findByPedidoId(pedidoId);
+        assertFalse(resultado.isEmpty());
+        assertEquals(pedidoId, resultado.get(0).getPedidoId());
+    }
+
+    @Test
+    void testCalcularTotalPagadoPorCliente_Success() {
+        Long clienteId = 1L;
+        Pago p1 = new Pago(); p1.setMonto(new BigDecimal("1000"));
+        Pago p2 = new Pago(); p2.setMonto(new BigDecimal("2000"));
+        when(pagoRepository.findByClienteId(clienteId)).thenReturn(List.of(p1, p2));
+
+        BigDecimal total = pagoService.calcularTotalPagadoPorCliente(clienteId);
+        assertEquals(new BigDecimal("3000"), total);
+    }
+
+    @Test
+    void testDelete_Success() {
+        Long id = 1L;
+        when(pagoRepository.existsById(id)).thenReturn(true);
+        doNothing().when(pagoRepository).deleteById(id);
+
+        pagoService.delete(id);
+        verify(pagoRepository, times(1)).deleteById(id);
     }
 }

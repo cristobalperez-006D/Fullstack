@@ -100,4 +100,49 @@ public class ClienteServiceTest {
             clienteService.delete(idInexistente);
         });
     }
+
+    @Test
+    void testFindAll_Success() {
+        // Given
+        Cliente c1 = new Cliente();
+        c1.setId(1L);
+        c1.setNombre("Cliente Uno");
+
+        Cliente c2 = new Cliente();
+        c2.setId(2L);
+        c2.setNombre("Cliente Dos");
+
+        when(clienteRepository.findAll()).thenReturn(java.util.List.of(c1, c2));
+
+        // When
+        var resultado = clienteService.findAll();
+
+        // Then
+        assertEquals(2, resultado.size());
+        verify(clienteRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testUpdate_Success() {
+        // Given
+        Long id = 1L;
+        ClienteDTO dto = new ClienteDTO();
+        dto.setNombre("Nuevo Nombre");
+
+        Cliente cExistente = new Cliente();
+        cExistente.setId(id);
+        cExistente.setNombre("Nombre Viejo");
+
+        when(clienteRepository.findById(id)).thenReturn(Optional.of(cExistente));
+        // Mockeamos el guardado para que devuelva el mismo objeto que recibe
+        when(clienteRepository.save(any(Cliente.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        // When
+        ClienteDTO resultado = clienteService.update(id, dto);
+
+        // Then
+        assertNotNull(resultado);
+        assertEquals("Nuevo Nombre", resultado.getNombre());
+        verify(clienteRepository, times(1)).save(any(Cliente.class));
+    }
 }
